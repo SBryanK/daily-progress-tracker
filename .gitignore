@@ -1,0 +1,40 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database (local)
+prisma/dev.db
+prisma/dev.db-journal
+prisma/*.sqlite
+prisma/*.sqlite-journal
+prisma/prisma/
+*.db
+*.db-journal
+
+# Personal data files (do NOT commit)
+*.xlsx
+*.xls
+*.csv
+
+# Uploads (runtime)
+uploads/
+
+# Misc
+.vercel
+.turbo
+tsconfig.tsbuildinfo

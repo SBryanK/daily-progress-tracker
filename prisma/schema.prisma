@@ -1,0 +1,104 @@
+// Prisma schema for the Daily Progress Tracker.
+// Dev uses SQLite; swap the provider/url for Postgres/Turso in production.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String          @id @default(cuid())
+  email          String          @unique
+  name           String
+  role           String          @default("ADMIN") // ADMIN | VIEWER
+  passwordHash   String
+  createdAt      DateTime        @default(now())
+  entries        ProgressEntry[] @relation("OwnedEntries")
+  comments       Comment[]
+  importBatches  ImportBatch[]
+  shareLinks     ShareLink[]
+}
+
+model ProgressEntry {
+  id              String    @id @default(cuid())
+  userId          String
+  user            User      @relation("OwnedEntries", fields: [userId], references: [id], onDelete: Cascade)
+
+  date            DateTime  // calendar date (start-of-day in user's TZ, stored as UTC)
+  startTime       String?   // "HH:mm" — optional for old-template imports
+  endTime         String?   // "HH:mm"
+  durationMinutes Int?      // computed when start+end present
+
+  projectName     String?   // Customer / Client / Project
+  taskTitle       String    // short title
+  category        String?   // e.g. "Meeting", "Research", "Customer follow-up"
+  description     String    // long-form — what you did (English, canonical)
+  descriptionZh   String?   // optional Chinese translation of description
+  status          String    @default("IN_PROGRESS") // NOT_STARTED | IN_PROGRESS | BLOCKED | WAITING_CUSTOMER | WAITING_INTERNAL | COMPLETED
+  priority        String    @default("MEDIUM")      // LOW | MEDIUM | HIGH | CRITICAL
+  blockers        String?
+  nextAction      String?
+  remarks         String?   // free-form comments (English, canonical)
+  remarksZh       String?   // optional Chinese translation of remarks
+  tags            String?   // comma-separated, simple for SQLite
+  relatedLinks    String?   // newline-separated URLs
+
+  sourceSheet     String?   // if imported from Excel, which sheet
+  sourceRow       Int?      // which row
+  importBatchId   String?
+  importBatch     ImportBatch? @relation(fields: [importBatchId], references: [id], onDelete: SetNull)
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  comments        Comment[]
+
+  @@index([userId, date])
+  @@index([status])
+  @@index([projectName])
+}
+
+model Comment {
+  id        String        @id @default(cuid())
+  entryId   String
+  entry     ProgressEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  body      String
+  resolved  Boolean       @default(false)
+  createdAt DateTime      @default(now())
+
+  @@index([entryId])
+}
+
+model ImportBatch {
+  id            String          @id @default(cuid())
+  userId        String
+  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename      String
+  totalRows     Int
+  importedRows  Int
+  skippedRows   Int
+  notes         String?
+  createdAt     DateTime        @default(now())
+  entries       ProgressEntry[]
+}
+
+model ShareLink {
+  id         String    @id @default(cuid())
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token      String    @unique
+  label      String
+  fromDate   DateTime?
+  toDate     DateTime?
+  projectName String?
+  statusFilter String?  // optional status filter
+  revoked    Boolean   @default(false)
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime?
+}

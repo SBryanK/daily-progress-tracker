@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" aria-hidden="true">
+  <!--
+    PLACEHOLDER: this is a neutral rounded-square "cloud" mark so the UI
+    does not break before you drop in the real logo.
+
+    TO REPLACE WITH THE OFFICIAL TENCENT CLOUD LOGO:
+      1. Download the official SVG (or PNG) from your corporate brand
+         guidelines / press kit.
+      2. Overwrite this file at:
+         apps/daily-progress-tracker/public/brand/tencent-cloud.svg
+      3. Keep the aspect ratio square (22×22 on screen). Rebuild / reload;
+         no code change is required.
+  -->
+  <defs>
+    <linearGradient id="tc-g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0052D9"/>
+      <stop offset="1" stop-color="#00A4FF"/>
+    </linearGradient>
+  </defs>
+  <rect x="3" y="3" width="42" height="42" rx="10" fill="url(#tc-g)"/>
+  <path d="M15 30 q0 -6 6 -6 h5 a5 5 0 1 1 0 10 h-5 q-6 0 -6 -4 z" fill="#ffffff" opacity=".95"/>
+  <circle cx="30.5" cy="20.5" r="3.5" fill="#ffffff" opacity=".9"/>
+</svg>
