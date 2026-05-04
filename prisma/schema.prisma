@@ -1,12 +1,13 @@
 // Prisma schema for the Daily Progress Tracker.
-// Dev uses SQLite; swap the provider/url for Postgres/Turso in production.
+// Production: PostgreSQL (Vercel Postgres / Neon / Supabase).
+// For local dev you can still point DATABASE_URL at a local Postgres container.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

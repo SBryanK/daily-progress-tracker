@@ -2,7 +2,7 @@
   "name": "daily-progress-tracker",
   "version": "0.1.0",
   "private": true,
-  "description": "Personal daily work progress tracker — replaces an Excel tracker with a responsive web app (Next.js 15 + Prisma + SQLite).",
+  "description": "Personal daily work progress tracker — replaces an Excel tracker with a responsive web app (Next.js 15 + Prisma + PostgreSQL).",
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && prisma migrate deploy && next build",
