@@ -91,8 +91,8 @@ export default async function LandingPage() {
 
       {isAdmin ? <AdminCta /> : null}
 
-      {/* Journal */}
-      <section className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-10">
+      {/* Journal — edge-to-edge on ultra-wide screens, comfortable padding on mobile. */}
+      <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10 xl:px-14 pb-10">
         {initial.length === 0 ? (
           <JournalEmpty />
         ) : (

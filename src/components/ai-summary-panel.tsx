@@ -74,7 +74,7 @@ export function AiSummaryPanel() {
   return (
     <section
       aria-labelledby="ai-summary-heading"
-      className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-20"
+      className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10 xl:px-14 pb-20"
     >
       <div className="rounded-2xl border border-border bg-bg-surface overflow-hidden">
         <header className="flex flex-wrap items-end justify-between gap-3 px-6 py-5 border-b border-border bg-bg-subtle/50">

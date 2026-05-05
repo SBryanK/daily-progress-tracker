@@ -82,7 +82,7 @@ export function PublicShell({
   return (
     <div className="min-h-screen flex flex-col pb-10">
       <header className="sticky top-0 z-30 border-b border-border/70 bg-bg/85 backdrop-blur-md">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 h-14 flex items-center gap-6">
+        <div className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10 xl:px-14 h-14 flex items-center gap-6">
           <Link
             href="/"
             className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md"
@@ -231,7 +231,7 @@ export function PublicShell({
         reads as chrome, not decoration.
       */}
       <footer className="fixed bottom-0 inset-x-0 z-30 h-10 border-t border-border/70 bg-bg/90 backdrop-blur-md">
-        <div className="mx-auto max-w-6xl h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4 text-[11px] sm:text-xs">
+        <div className="mx-auto w-full max-w-[1600px] h-full px-4 sm:px-6 lg:px-10 xl:px-14 flex items-center justify-between gap-4 text-[11px] sm:text-xs">
           <p className="text-fg-muted truncate">
             <span className="font-medium text-fg">{t("footer.owner")}</span>
             <span className="mx-1.5 text-fg-subtle" aria-hidden>·</span>

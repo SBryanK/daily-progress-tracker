@@ -172,7 +172,7 @@ export function JournalFeed({
           // WAI-ARIA recommended pattern for this exact case.
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
           tabIndex={0}
-          className="thin-scrollbar overflow-y-auto px-4 sm:px-6 lg:px-8 py-8 h-[60vh] md:h-[72vh] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
+          className="thin-scrollbar overflow-y-auto pt-0 pb-8 h-[60vh] md:h-[72vh] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
         >
           <div className="space-y-14">
             {[...byMonth.entries()].map(([ym, dates]) => (
@@ -181,40 +181,42 @@ export function JournalFeed({
                 aria-labelledby={`m-${ym}`}
                 className="relative"
               >
-                {/* Month header — sticks to the TOP of the scroller so it
-                    stays readable while the user scrolls through a long
-                    month. Uses a fully-opaque surface (no transparency)
-                    to avoid entries showing through behind it. The
-                    negative top offset + same-colour background close
-                    the 1-2px seam that otherwise appears when the
-                    scroller's internal padding (`py-8`) passes by. */}
+                {/* Month header — sticks flush to the TOP of the scroll
+                    container so there is NO visible gap between the
+                    card border and the pinned header. Uses a fully-
+                    opaque background + soft shadow so content scrolling
+                    underneath never bleeds through. Horizontal padding
+                    matches the scroller's content padding via the
+                    negative margins that stretch the header to the
+                    card's inner edges. */}
                 <h2
                   id={`m-${ym}`}
-                  className="sticky -top-8 z-20 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 pt-8 pb-4 mb-4 bg-bg-subtle text-xl sm:text-2xl font-bold tracking-tight text-fg"
+                  className="sticky top-0 z-20 bg-bg-subtle px-4 sm:px-6 lg:px-8 xl:px-10 pt-5 pb-4 text-xl sm:text-2xl font-bold tracking-tight text-fg shadow-[0_1px_0_rgba(0,0,0,0.04)]"
                 >
                   {formatMonthLabel(ym, lang)}
                 </h2>
 
                 {/* Continuous rail — drawn ONCE per section so it never
                     appears broken between consecutive days. Starts just
-                    below the header (top-0 of the day-card area) and
-                    runs all the way to the last day. */}
+                    below the header and runs all the way to the last day. */}
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute left-[10px] sm:left-[14px] top-[84px] bottom-0 w-px bg-border"
+                  className="pointer-events-none absolute left-[18px] sm:left-[24px] lg:left-[30px] top-[72px] bottom-0 w-px bg-border"
                 />
 
-                <div className="space-y-8 relative">
-                  {dates.map((d) => (
-                    <DayEntriesCard
-                      key={d}
-                      isoDate={d}
-                      weekdayLabel={formatWeekday(d, lang)}
-                      entries={byDate.get(d) ?? []}
-                      isAdmin={isAdmin}
-                      isLatest={d === effectiveLatest}
-                    />
-                  ))}
+                <div className="px-4 sm:px-6 lg:px-8 xl:px-10 pt-2">
+                  <div className="space-y-8 relative">
+                    {dates.map((d) => (
+                      <DayEntriesCard
+                        key={d}
+                        isoDate={d}
+                        weekdayLabel={formatWeekday(d, lang)}
+                        entries={byDate.get(d) ?? []}
+                        isAdmin={isAdmin}
+                        isLatest={d === effectiveLatest}
+                      />
+                    ))}
+                  </div>
                 </div>
               </section>
             ))}

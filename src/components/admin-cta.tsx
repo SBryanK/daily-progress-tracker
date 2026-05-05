@@ -12,7 +12,7 @@ import { useLanguage } from "@/components/language-provider";
 export function AdminCta() {
   const { t } = useLanguage();
   return (
-    <section className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pb-6">
+    <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10 xl:px-14 pb-6">
       <Link
         href="/progress/new"
         className="group inline-flex w-full sm:w-auto items-center justify-between gap-4 rounded-xl border border-dashed border-border-strong bg-bg-subtle/50 px-5 py-4 text-left hover:bg-bg-muted/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent transition-colors"

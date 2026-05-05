@@ -17,7 +17,7 @@ import { useLanguage } from "@/components/language-provider";
 export function Hero() {
   const { t } = useLanguage();
   return (
-    <section className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-10 sm:pb-14">
+    <section className="mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10 xl:px-14 pt-8 sm:pt-12 pb-10 sm:pb-14">
       <h1 className="text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1] pb-1 text-gradient-accent">
         {t("hero.title")}
       </h1>
