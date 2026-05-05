@@ -30,6 +30,13 @@ prisma/prisma/
 *.xlsx
 *.xls
 *.csv
+daily.txt
+
+# Local-only helper scripts (not part of the app runtime)
+scripts/import-daily-txt.ts
+
+# Placeholder files
+prisma/migrations/.gitkeep
 
 # Uploads (runtime)
 uploads/
