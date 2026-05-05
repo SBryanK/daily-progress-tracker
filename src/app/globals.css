@@ -266,3 +266,17 @@ h3 {
 .journal-shell {
   overscroll-behavior-y: contain;
 }
+
+/* Shake animation — used by the sign-in dialog and the /login form to
+   draw attention to a validation error without being obnoxious. A
+   reduced-motion user sees the colour change but not the shake. */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%      { transform: translateX(-4px); }
+  40%      { transform: translateX(4px); }
+  60%      { transform: translateX(-3px); }
+  80%      { transform: translateX(2px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  [class*="animate-[shake"] { animation: none !important; }
+}

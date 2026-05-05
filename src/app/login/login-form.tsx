@@ -1,0 +1,230 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import {
+  AlertCircle,
+  ArrowRight,
+  Eye,
+  EyeOff,
+  Loader2,
+  Lock,
+  Mail,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+/**
+ * LoginForm — the interactive half of /login.
+ *
+ * Lives in its own client file so the parent `page.tsx` can stay on the
+ * server runtime and do the "already signed in → redirect" check before
+ * React ever ships to the browser.
+ *
+ * Features:
+ *   • Autofocuses the email field on mount.
+ *   • Show/hide password toggle.
+ *   • Client-side validation (required, email format) before round-trip.
+ *   • Proper `aria-live` error region with shake animation.
+ *   • Disables the button + inputs while the credentials call is in
+ *     flight, so double-submits are impossible.
+ *   • Works with the existing NextAuth Credentials provider — no API
+ *     change needed.
+ */
+export function LoginForm({
+  next,
+  initialError,
+}: {
+  next: string;
+  initialError: string | null;
+}) {
+  const router = useRouter();
+  const emailRef = useRef<HTMLInputElement>(null);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [capsLockOn, setCapsLockOn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(initialError);
+
+  useEffect(() => {
+    // Autofocus on mount — small timeout so browsers that autofill
+    // credentials on page-load don't fight us for the cursor.
+    const id = window.setTimeout(() => emailRef.current?.focus(), 40);
+    return () => window.clearTimeout(id);
+  }, []);
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (loading) return;
+
+    const trimmedEmail = email.trim().toLowerCase();
+    if (!trimmedEmail || !password) {
+      setError("Email and password are both required.");
+      return;
+    }
+    // Light, forgiving email check — authoritative validation lives on
+    // the server / in zod inside NextAuth's authorize().
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      setError("That doesn't look like a valid email address.");
+      return;
+    }
+
+    setError(null);
+    setLoading(true);
+    try {
+      const res = await signIn("credentials", {
+        email: trimmedEmail,
+        password,
+        redirect: false,
+      });
+      if (res?.error) {
+        setError("Incorrect email or password. Please try again.");
+        setPassword("");
+        return;
+      }
+      // Success — push to the callback URL and force a server refresh so
+      // the admin-only UI chrome (e.g. "Add entry" CTA) renders on the
+      // next navigation.
+      router.push(next || "/dashboard");
+      router.refresh();
+    } catch (err) {
+      // Network / unexpected error — don't leak details.
+      setError("Something went wrong. Please try again in a moment.");
+      // eslint-disable-next-line no-console
+      console.error("[login]", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function onPasswordKey(e: React.KeyboardEvent<HTMLInputElement>) {
+    // Best-effort caps-lock indicator; `getModifierState` is well-
+    // supported in modern browsers and silently returns false otherwise.
+    if (typeof e.getModifierState === "function") {
+      setCapsLockOn(e.getModifierState("CapsLock"));
+    }
+  }
+
+  return (
+    <form
+      onSubmit={onSubmit}
+      className="flex flex-col gap-4"
+      aria-busy={loading}
+      noValidate
+    >
+      {/* Email */}
+      <div className="flex flex-col gap-1.5">
+        <label
+          htmlFor="login-email"
+          className="text-sm font-medium text-fg"
+        >
+          Email
+        </label>
+        <div className="relative">
+          <Mail
+            aria-hidden
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-fg-subtle"
+          />
+          <input
+            ref={emailRef}
+            id="login-email"
+            type="email"
+            inputMode="email"
+            autoComplete="email"
+            required
+            disabled={loading}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            className="w-full h-11 pl-10 pr-3 rounded-lg bg-bg border border-border text-fg placeholder:text-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent disabled:opacity-60"
+          />
+        </div>
+      </div>
+
+      {/* Password */}
+      <div className="flex flex-col gap-1.5">
+        <label
+          htmlFor="login-password"
+          className="text-sm font-medium text-fg"
+        >
+          Password
+        </label>
+        <div className="relative">
+          <Lock
+            aria-hidden
+            className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-fg-subtle"
+          />
+          <input
+            id="login-password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            required
+            disabled={loading}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onKeyUp={onPasswordKey}
+            onKeyDown={onPasswordKey}
+            placeholder="••••••••"
+            className="w-full h-11 pl-10 pr-11 rounded-lg bg-bg border border-border text-fg placeholder:text-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent disabled:opacity-60"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword((s) => !s)}
+            tabIndex={-1}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-pressed={showPassword}
+            className="absolute right-2 top-1/2 -translate-y-1/2 inline-flex h-7 w-7 items-center justify-center rounded-md text-fg-subtle hover:text-fg hover:bg-bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            {showPassword ? (
+              <EyeOff className="h-4 w-4" aria-hidden />
+            ) : (
+              <Eye className="h-4 w-4" aria-hidden />
+            )}
+          </button>
+        </div>
+        {capsLockOn ? (
+          <p className="text-[11.5px] text-warning flex items-center gap-1.5">
+            <AlertCircle className="h-3 w-3" aria-hidden />
+            Caps Lock is on.
+          </p>
+        ) : null}
+      </div>
+
+      {/* Error banner */}
+      {error ? (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="flex items-start gap-2 rounded-md border border-danger/30 bg-danger/10 px-3 py-2.5 text-[13px] text-danger animate-[shake_0.35s_ease-in-out]"
+        >
+          <AlertCircle
+            className="h-4 w-4 mt-0.5 shrink-0"
+            aria-hidden
+          />
+          <span>{error}</span>
+        </div>
+      ) : null}
+
+      <Button
+        type="submit"
+        size="md"
+        disabled={loading}
+        className="mt-1 w-full h-11 text-[14px] font-medium"
+      >
+        {loading ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
+            Signing in…
+          </>
+        ) : (
+          <>
+            Sign in
+            <ArrowRight className="h-4 w-4" aria-hidden />
+          </>
+        )}
+      </Button>
+    </form>
+  );
+}
