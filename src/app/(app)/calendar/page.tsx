@@ -66,7 +66,7 @@ export default async function CalendarPage({
   const label = firstDay.toLocaleDateString("en-US", { month: "long", year: "numeric", timeZone: "UTC" });
 
   return (
-    <div className="p-6 md:p-8 max-w-6xl mx-auto">
+    <div className="p-6 md:p-8 mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-10 xl:px-14">
       <header className="mb-6 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight">{label}</h1>

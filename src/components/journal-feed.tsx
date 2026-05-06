@@ -197,11 +197,14 @@ export function JournalFeed({
                 </h2>
 
                 {/* Continuous rail — drawn ONCE per section so it never
-                    appears broken between consecutive days. Starts just
-                    below the header and runs all the way to the last day. */}
+                    appears broken between consecutive days. Positioned
+                    to pass EXACTLY through the centre of each day's
+                    marker dot. Dot centre X = card.paddingLeft + dot.left
+                    + dot.width/2, i.e. 16+6+5=27 (mobile), 24+10+5=39
+                    (sm), 32+10+5=47 (lg), 40+10+5=55 (xl). */}
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute left-[18px] sm:left-[24px] lg:left-[30px] top-[72px] bottom-0 w-px bg-border"
+                  className="pointer-events-none absolute left-[27px] sm:left-[39px] lg:left-[47px] xl:left-[55px] top-[76px] bottom-4 w-px bg-border"
                 />
 
                 <div className="px-4 sm:px-6 lg:px-8 xl:px-10 pt-2">
