@@ -2,7 +2,13 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 type LabelledProps = {
-  label: React.ReactNode;
+  /**
+   * Visible field label. Optional: when omitted (e.g. for a dense
+   * composer row that already conveys meaning via context), callers
+   * are expected to pass `aria-label` on the input itself so the
+   * field is still announced by screen readers.
+   */
+  label?: React.ReactNode;
   hint?: string;
   error?: string;
   required?: boolean;
@@ -21,10 +27,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(function Inp
 
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={inputId} className="text-sm font-medium text-fg">
-        {label}
-        {required ? <span className="text-danger"> *</span> : null}
-      </label>
+      {label ? (
+        <label htmlFor={inputId} className="text-sm font-medium text-fg">
+          {label}
+          {required ? <span className="text-danger"> *</span> : null}
+        </label>
+      ) : null}
       <input
         ref={ref}
         id={inputId}
@@ -66,10 +74,12 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
   const hintId = hint ? `${inputId}-hint` : undefined;
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={inputId} className="text-sm font-medium text-fg">
-        {label}
-        {required ? <span className="text-danger"> *</span> : null}
-      </label>
+      {label ? (
+        <label htmlFor={inputId} className="text-sm font-medium text-fg">
+          {label}
+          {required ? <span className="text-danger"> *</span> : null}
+        </label>
+      ) : null}
       <textarea
         ref={ref}
         id={inputId}
@@ -77,7 +87,7 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(fun
         aria-required={required}
         aria-describedby={[errorId, hintId].filter(Boolean).join(" ") || undefined}
         className={cn(
-          "w-full min-h-[96px] px-3 py-2 rounded-lg bg-bg border border-border text-fg",
+          "w-full min-h-[64px] px-3 py-2 rounded-lg bg-bg border border-border text-fg",
           "placeholder:text-fg-subtle",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent",
           error && "border-danger",

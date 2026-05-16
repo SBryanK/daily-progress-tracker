@@ -2,12 +2,14 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { DayEntriesCard } from "@/components/day-entries-card";
+import { StructuredDayCard } from "@/components/structured-day-card";
 import {
   useLanguage,
   formatMonthLabel,
   formatWeekday,
 } from "@/components/language-provider";
-import { Loader2 } from "lucide-react";
+import { parseStructured } from "@/lib/structured";
+import { Loader2, ChevronDown, ChevronUp } from "lucide-react";
 
 type Entry = {
   id: string;
@@ -22,6 +24,8 @@ type Entry = {
   remarks: string | null;
   remarksZh: string | null;
   durationMinutes: number | null;
+  entryKind?: string | null;
+  structured?: unknown;
 };
 
 type FeedPayload = {
@@ -30,20 +34,19 @@ type FeedPayload = {
 };
 
 /**
- * Infinite-scroll journal feed rendered inside its OWN scroll container.
+ * Infinite-scroll journal feed.
  *
- * Structural change (v2.1): the vertical "spine" rail used to be drawn
- * per-day (inside each DayEntriesCard), which meant the `space-y-8`
- * between days left a visible gap — the rail looked broken. The rail is
- * now drawn once per MONTH section as an absolutely-positioned element
- * spanning the entire section, so it reads as a single unbroken line
- * from the first entry of the month to the last. DayEntriesCard only
- * paints its own dot now.
+ * v3 (2026-05-16) adds polymorphic day rendering:
+ *   • Days that contain at least one STRUCTURED entry are rendered with
+ *     <StructuredDayCard /> at the top.
+ *   • Legacy time-blocked entries on the same day collapse into a
+ *     "+ N time-blocked entries" disclosure beneath, so a structured
+ *     summary always wins the visitor's attention.
+ *   • Days that contain ONLY legacy entries continue to render exactly
+ *     as before — visitors who already love that look see no change.
  *
- * The IntersectionObserver is scoped to `root: scrollerRef.current`, so
- * the sentinel fires as it approaches the container's bottom edge — not
- * the viewport's. We still dedupe by id and guard against double-fire
- * while a fetch is already in flight.
+ * Scroll mechanics, sentinel + IntersectionObserver, and the per-month
+ * sticky header / continuous rail are all unchanged.
  */
 export function JournalFeed({
   initialEntries,
@@ -106,8 +109,8 @@ export function JournalFeed({
         }
       },
       {
-        root, // observe relative to the scroll container, not the viewport
-        rootMargin: "400px 0px", // start loading before the bottom edge
+        root,
+        rootMargin: "400px 0px",
         threshold: 0,
       },
     );
@@ -115,8 +118,6 @@ export function JournalFeed({
     return () => io.disconnect();
   }, [cursor, loadMore]);
 
-  // Fallback for engines that fire IO slowly on fast flings: also watch
-  // the container's native scroll and trigger loadMore when near bottom.
   useEffect(() => {
     const root = scrollerRef.current;
     if (!root || !cursor) return;
@@ -131,7 +132,7 @@ export function JournalFeed({
     return () => root.removeEventListener("scroll", onScroll);
   }, [cursor, loadMore]);
 
-  // Regroup all loaded entries into month → date → entries[]
+  // Group by month → date → entries[].
   const byDate = new Map<string, Entry[]>();
   for (const e of entries) {
     const arr = byDate.get(e.date) ?? [];
@@ -146,30 +147,16 @@ export function JournalFeed({
     byMonth.set(ym, arr);
   }
 
-  // Determine the overall latest date present in the loaded feed. We
-  // prefer the server-provided `latestDate` (correct on first paint even
-  // when JS hasn't hydrated) but fall back to the client-side max so
-  // the marker still moves when the user adds a brand-new entry and the
-  // list re-renders.
   const computedLatest = entries.length > 0 ? entries[0]!.date : null;
   const effectiveLatest = latestDate ?? computedLatest;
 
   return (
     <div className="journal-shell rounded-2xl border border-border bg-bg-subtle/40 overflow-hidden">
-      {/*
-        Outer wrapper keeps the border + rounded corners + fade mask.
-        The INNER div is the actual scroll region — separating them means
-        the WebKit scrollbar track doesn't get cut off by the mask.
-      */}
       <div className="scroll-fade">
         <div
           ref={scrollerRef}
           role="region"
           aria-label={t("journal.regionLabel")}
-          // Allow keyboard users to focus the region and scroll it with
-          // arrow keys / page-down. The a11y linter flags tabIndex on a
-          // non-interactive element, but a focusable scroll region is the
-          // WAI-ARIA recommended pattern for this exact case.
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
           tabIndex={0}
           className="thin-scrollbar overflow-y-auto pt-0 pb-8 h-[60vh] md:h-[72vh] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset"
@@ -181,27 +168,12 @@ export function JournalFeed({
                 aria-labelledby={`m-${ym}`}
                 className="relative"
               >
-                {/* Month header — sticks flush to the TOP of the scroll
-                    container so there is NO visible gap between the
-                    card border and the pinned header. Uses a fully-
-                    opaque background + soft shadow so content scrolling
-                    underneath never bleeds through. Horizontal padding
-                    matches the scroller's content padding via the
-                    negative margins that stretch the header to the
-                    card's inner edges. */}
                 <h2
                   id={`m-${ym}`}
                   className="sticky top-0 z-20 bg-bg-subtle px-4 sm:px-6 lg:px-8 xl:px-10 pt-5 pb-4 text-xl sm:text-2xl font-bold tracking-tight text-fg shadow-[0_1px_0_rgba(0,0,0,0.04)]"
                 >
                   {formatMonthLabel(ym, lang)}
                 </h2>
-
-                {/* Continuous rail — drawn ONCE per section so it never
-                    appears broken between consecutive days. Positioned
-                    to pass EXACTLY through the centre of each day's
-                    marker dot. Dot centre X = card.paddingLeft + dot.left
-                    + dot.width/2, i.e. 16+6+5=27 (mobile), 24+10+5=39
-                    (sm), 32+10+5=47 (lg), 40+10+5=55 (xl). */}
                 <div
                   aria-hidden
                   className="pointer-events-none absolute left-[27px] sm:left-[39px] lg:left-[47px] xl:left-[55px] top-[76px] bottom-4 w-px bg-border"
@@ -210,8 +182,9 @@ export function JournalFeed({
                 <div className="px-4 sm:px-6 lg:px-8 xl:px-10 pt-2">
                   <div className="space-y-8 relative">
                     {dates.map((d) => (
-                      <DayEntriesCard
+                      <DayBlock
                         key={d}
+                        anchorId={`day-${d}`}
                         isoDate={d}
                         weekdayLabel={formatWeekday(d, lang)}
                         entries={byDate.get(d) ?? []}
@@ -224,21 +197,13 @@ export function JournalFeed({
               </section>
             ))}
 
-            {/* Sentinel + status row */}
             <div className="flex justify-center py-6" aria-live="polite">
               {cursor ? (
                 <>
-                  <div
-                    ref={sentinelRef}
-                    aria-hidden
-                    className="h-px w-px"
-                  />
+                  <div ref={sentinelRef} aria-hidden className="h-px w-px" />
                   {loading ? (
                     <span className="inline-flex items-center gap-2 text-sm text-fg-muted">
-                      <Loader2
-                        className="h-4 w-4 animate-spin"
-                        aria-hidden
-                      />
+                      <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
                       {t("journal.loadingMore")}
                     </span>
                   ) : error ? (
@@ -264,6 +229,126 @@ export function JournalFeed({
           </div>
         </div>
       </div>
+    </div>
+  );
+}
+
+/**
+ * Inner component that decides whether to render a day with the new
+ * structured card, the legacy time-blocked card, or both (with the
+ * legacy entries collapsed under a disclosure).
+ *
+ * Extracted out of the main feed so the disclosure state can live on
+ * a per-day basis (each day card is its own React subtree).
+ */
+function DayBlock({
+  anchorId,
+  isoDate,
+  weekdayLabel,
+  entries,
+  isAdmin,
+  isLatest,
+}: {
+  anchorId: string;
+  isoDate: string;
+  weekdayLabel: string;
+  entries: Entry[];
+  isAdmin: boolean;
+  isLatest: boolean;
+}) {
+  const { t } = useLanguage();
+  // A day "has structured" content when at least one entry on it has
+  // entryKind === "STRUCTURED" AND its `structured` JSON parses cleanly.
+  const structuredEntries: Array<Entry & { parsed: NonNullable<ReturnType<typeof parseStructured>> }> = [];
+  const legacyEntries: Entry[] = [];
+  for (const e of entries) {
+    if (e.entryKind === "STRUCTURED") {
+      const parsed = parseStructured(e.structured);
+      if (parsed) {
+        structuredEntries.push({ ...e, parsed });
+        continue;
+      }
+    }
+    legacyEntries.push(e);
+  }
+
+  const [showLegacy, setShowLegacy] = useState(false);
+
+  // Pure-legacy day → render exactly as before.
+  if (structuredEntries.length === 0) {
+    return (
+      <div id={anchorId} style={{ scrollMarginTop: 80 }}>
+        <DayEntriesCard
+          isoDate={isoDate}
+          weekdayLabel={weekdayLabel}
+          entries={legacyEntries}
+          isAdmin={isAdmin}
+          isLatest={isLatest}
+        />
+      </div>
+    );
+  }
+
+  // Structured (possibly with legacy on the same day).
+  const disclosureKey =
+    legacyEntries.length === 1
+      ? "section.legacy.disclosure_one"
+      : "section.legacy.disclosure_other";
+  const disclosureLabel = t(disclosureKey).replace(
+    "{n}",
+    String(legacyEntries.length),
+  );
+
+  return (
+    <div
+      id={anchorId}
+      style={{ scrollMarginTop: 80 }}
+      className="space-y-4"
+    >
+      {structuredEntries.map((e, idx) => (
+        <StructuredDayCard
+          key={e.id}
+          isoDate={isoDate}
+          weekdayLabel={idx === 0 ? weekdayLabel : ""}
+          taskTitle={e.taskTitle}
+          projectName={e.projectName}
+          entryId={e.id}
+          data={e.parsed}
+          isAdmin={isAdmin}
+          // Only the FIRST structured entry of the latest day pulses, so
+          // we don't paint two live dots stacked on top of each other.
+          isLatest={isLatest && idx === 0}
+        />
+      ))}
+
+      {legacyEntries.length > 0 ? (
+        <div className="pl-6 sm:pl-8">
+          <button
+            type="button"
+            onClick={() => setShowLegacy((v) => !v)}
+            className="inline-flex items-center gap-1.5 text-[12px] text-fg-muted hover:text-fg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-md px-2 py-1 -ml-2"
+            aria-expanded={showLegacy}
+          >
+            {showLegacy ? (
+              <ChevronUp className="h-3.5 w-3.5" aria-hidden />
+            ) : (
+              <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+            )}
+            {disclosureLabel}
+          </button>
+          {showLegacy ? (
+            <div className="mt-2">
+              <DayEntriesCard
+                isoDate={isoDate}
+                weekdayLabel=""
+                entries={legacyEntries}
+                isAdmin={isAdmin}
+                isLatest={false}
+              />
+            </div>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 }

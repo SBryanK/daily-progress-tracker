@@ -34,6 +34,13 @@ daily.txt
 
 # Local-only helper scripts (not part of the app runtime)
 scripts/import-daily-txt.ts
+scripts/check-may78.ts
+
+# Planning / spec notes (kept locally, not deployed)
+.codebuddy/
+
+# Locally-generated artifacts (regenerate on demand via scripts/export-gemini-md.ts)
+exports/
 
 # Placeholder files
 prisma/migrations/.gitkeep

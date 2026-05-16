@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/require-admin";
 import { safeToken } from "@/lib/utils";
 import { z } from "zod";
 
@@ -14,9 +14,9 @@ const createSchema = z.object({
 });
 
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const userId = (session.user as { id: string }).id;
+  const gate = await requireAdmin();
+  if (!gate.ok) return NextResponse.json(gate.body, { status: gate.status });
+  const userId = gate.userId;
   const links = await prisma.shareLink.findMany({
     where: { userId },
     orderBy: { createdAt: "desc" },
@@ -25,9 +25,9 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const userId = (session.user as { id: string }).id;
+  const gate = await requireAdmin();
+  if (!gate.ok) return NextResponse.json(gate.body, { status: gate.status });
+  const userId = gate.userId;
 
   const body = await req.json().catch(() => null);
   const parsed = createSchema.safeParse(body);

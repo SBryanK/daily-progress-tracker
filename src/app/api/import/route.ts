@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/require-admin";
 import { parseWorkbook, entryFingerprint } from "@/lib/excel";
 import { minutesBetween } from "@/lib/utils";
 import { logger } from "@/lib/logger";
@@ -17,9 +17,9 @@ export const maxDuration = 60;
  *      and return an ImportBatch summary.
  */
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const userId = (session.user as { id: string }).id;
+  const gate = await requireAdmin();
+  if (!gate.ok) return NextResponse.json(gate.body, { status: gate.status });
+  const userId = gate.userId;
 
   const form = await req.formData().catch(() => null);
   if (!form) return NextResponse.json({ error: "Expected multipart/form-data" }, { status: 400 });

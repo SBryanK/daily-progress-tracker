@@ -13,6 +13,7 @@ import {
   Mail,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { markOwnerCookie } from "@/app/welcome/actions";
 
 /**
  * LoginForm — the interactive half of /login.
@@ -84,9 +85,17 @@ export function LoginForm({
         setPassword("");
         return;
       }
-      // Success — push to the callback URL and force a server refresh so
-      // the admin-only UI chrome (e.g. "Add entry" CTA) renders on the
-      // next navigation.
+      // Success — mark this browser as the Owner so the Welcome gate
+      // is suppressed for the next year, then push to the callback URL
+      // and force a server refresh so admin-only chrome (e.g. "Add
+      // entry" CTA) renders on the next navigation. Cookie failure is
+      // non-fatal: the user is still signed in and can re-pick their
+      // role from the footer.
+      try {
+        await markOwnerCookie();
+      } catch {
+        /* swallow — the auth session itself is what gates writes */
+      }
       router.push(next || "/dashboard");
       router.refresh();
     } catch (err) {

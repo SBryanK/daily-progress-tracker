@@ -119,6 +119,79 @@ const DICT: Dict = {
     en: "All rights reserved.",
     zh: "保留所有权利。",
   },
+  "footer.switchRole": { en: "Switch role", zh: "切换身份" },
+
+  // ---- Structured daily template (added 2026-05-16) ------------------
+  "section.workLog": { en: "Work log", zh: "工作日志" },
+  "section.topThings": { en: "Top Things", zh: "今日重点" },
+  "section.completed": { en: "Completed", zh: "已完成" },
+  "section.progressing": { en: "Progressing", zh: "进行中" },
+  "section.tomorrow": { en: "Tomorrow", zh: "明日计划" },
+  "section.workLog.empty": {
+    en: "No time blocks logged.",
+    zh: "暂未记录时间块。",
+  },
+  "section.outcomes.empty": { en: "—", zh: "—" },
+  "section.legacy.disclosure_one": {
+    en: "+ {n} time-blocked entry",
+    zh: "+ {n} 条时间块记录",
+  },
+  "section.legacy.disclosure_other": {
+    en: "+ {n} time-blocked entries",
+    zh: "+ {n} 条时间块记录",
+  },
+
+  // ---- Today composer (Owner) ----------------------------------------
+  "today.title": { en: "Today", zh: "今天" },
+  "today.subtitle": {
+    en: "Capture today's notes — work log, top things, and what you completed.",
+    zh: "记录今天的工作日志、重点任务与完成情况。",
+  },
+  "today.workLog.add": { en: "+ Add row", zh: "+ 添加一行" },
+  "today.workLog.time": { en: "Time", zh: "时间" },
+  "today.workLog.note": { en: "What you worked on", zh: "工作内容" },
+  "today.topThings.add": { en: "+ Add Top Thing", zh: "+ 添加重点" },
+  "today.topThings.placeholder": {
+    en: "e.g. Telkomsel Maxstream POC",
+    zh: "例：Telkomsel Maxstream POC",
+  },
+  "today.outcomes.add": { en: "+ Add", zh: "+ 添加" },
+  "today.outcomes.note": { en: "What happened", zh: "发生了什么" },
+  "today.outcomes.linkTo": { en: "Link to Top Thing", zh: "关联重点" },
+  "today.outcomes.assoc": {
+    en: "or free-text reference",
+    zh: "或填写自由关联",
+  },
+  "today.save": { en: "Save today", zh: "保存今日" },
+  "today.saveShortcut": {
+    en: "⌘/Ctrl + Enter",
+    zh: "⌘/Ctrl + Enter",
+  },
+  "today.saved": { en: "Saved · {time}", zh: "已保存 · {time}" },
+  "today.errors.topThings": {
+    en: "Add at least one Top Thing for today.",
+    zh: "请为今天至少填写一个重点任务。",
+  },
+  "today.quickRow.title": { en: "+ Add to Work log", zh: "+ 追加到工作日志" },
+  "today.quickRow.append": { en: "Append", zh: "追加" },
+  "today.legacyCta": {
+    en: "Backfill an older day in legacy time-block format →",
+    zh: "以时间块格式补记之前的一天 →",
+  },
+
+  // ---- Welcome gate --------------------------------------------------
+  "welcome.title": { en: "Welcome", zh: "欢迎" },
+  "welcome.owner": { en: "I'm the Owner (Bryan)", zh: "我是所有者（Bryan）" },
+  "welcome.visitor": { en: "I'm a Visitor", zh: "我是访客" },
+
+  // ---- Visitor weekly strip ------------------------------------------
+  "thisWeek.title": { en: "This week", zh: "本周概览" },
+  "thisWeek.subtitle": {
+    en: "Latest 5 working days, top thing per day.",
+    zh: "最近5个工作日的重点。",
+  },
+  "thisWeek.completed": { en: "completed", zh: "完成" },
+  "thisWeek.progressing": { en: "in progress", zh: "进行中" },
 
   "ai.title": { en: "AI Summary", zh: "AI 总结" },
   "ai.subtitle": {

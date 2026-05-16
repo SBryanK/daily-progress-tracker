@@ -32,16 +32,26 @@ export async function GET(req: Request) {
   if (cursor) {
     const row = await prisma.progressEntry.findUnique({
       where: { id: cursor },
-      select: { date: true, createdAt: true },
+      select: { id: true, date: true, createdAt: true },
     });
     if (row) {
       where = {
         userId: userFilter,
         OR: [
+          // Older days.
           { date: { lt: row.date } },
+          // Same day, earlier createdAt.
           {
             date: row.date,
             createdAt: { lt: row.createdAt },
+          },
+          // Same day & same createdAt (possible after bulk imports of
+          // many rows in the same minute) — disambiguate by id so we
+          // never skip or duplicate a row across pages.
+          {
+            date: row.date,
+            createdAt: row.createdAt,
+            id: { lt: row.id },
           },
         ],
       };
@@ -69,6 +79,8 @@ export async function GET(req: Request) {
       remarks: true,
       remarksZh: true,
       durationMinutes: true,
+      entryKind: true,
+      structured: true,
     },
   });
 

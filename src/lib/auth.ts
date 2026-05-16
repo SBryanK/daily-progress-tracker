@@ -48,7 +48,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = (user as { id: string }).id;
-        token.role = (user as { role?: string }).role ?? "ADMIN";
+        // Default to VIEWER (not ADMIN) when the underlying record has no
+        // explicit role — never silently grant admin power.
+        token.role = (user as { role?: string }).role ?? "VIEWER";
       }
       return token;
     },
@@ -56,7 +58,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user) {
         (session.user as unknown as { id?: string }).id = token.id as string;
         (session.user as unknown as { role?: string }).role =
-          (token.role as string) ?? "ADMIN";
+          (token.role as string) ?? "VIEWER";
       }
       return session;
     },

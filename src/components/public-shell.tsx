@@ -191,12 +191,37 @@ export function PublicShell({
           </div>
         </div>
 
-        {/* Mobile nav (admin quick-jumps appended when signed in) */}
+        {/*
+          Mobile / tablet secondary nav.
+
+          Renders BOTH the public tabs (Overview, Calendar) AND, when
+          the visitor is signed in, the admin shortcuts (Import, Export,
+          Share). The previous version only showed admin items here,
+          which left small-screen visitors with no way to jump to the
+          Calendar once the top tab row scrolled off the viewport.
+          (Fixes A3 + A10.)
+        */}
         <nav
           aria-label="Primary (mobile)"
           className="lg:hidden border-t border-border/70 bg-bg/85"
         >
           <ul className="flex items-center gap-1 px-3 py-1.5 text-sm overflow-x-auto">
+            {PUBLIC_NAV.map((p) => (
+              <li key={p.href}>
+                <Link
+                  href={p.href}
+                  aria-current={isActive(p.href) ? "page" : undefined}
+                  className={cn(
+                    "inline-flex h-8 items-center gap-1.5 rounded-md px-3 whitespace-nowrap text-[13px]",
+                    isActive(p.href)
+                      ? "bg-bg-muted text-fg font-medium"
+                      : "text-fg-muted hover:bg-bg-muted hover:text-fg",
+                  )}
+                >
+                  {p.label}
+                </Link>
+              </li>
+            ))}
             {user
               ? ADMIN_NAV.map((a) => (
                   <li key={a.href}>
@@ -239,9 +264,20 @@ export function PublicShell({
             <span className="hidden sm:inline mx-1.5 text-fg-subtle" aria-hidden>·</span>
             <span className="text-fg-subtle">{t("footer.location")}</span>
           </p>
-          <p className="text-fg-subtle whitespace-nowrap tabular-nums">
-            © {new Date().getFullYear()} · {t("footer.rights")}
-          </p>
+          <div className="flex items-center gap-3 whitespace-nowrap">
+            <Link
+              href="/api/welcome/switch-role"
+              prefetch={false}
+              className="text-fg-subtle hover:text-fg underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
+              title="Forget my role choice and show the welcome screen again"
+            >
+              {t("footer.switchRole")}
+            </Link>
+            <span className="text-fg-subtle" aria-hidden>·</span>
+            <p className="text-fg-subtle tabular-nums">
+              © {new Date().getFullYear()} · {t("footer.rights")}
+            </p>
+          </div>
         </div>
       </footer>
     </div>

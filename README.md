@@ -41,6 +41,81 @@ Prisma + SQLite + NextAuth**. Zero external services required for local dev.
 
 ---
 
+## Daily template (May 2026 onwards)
+
+From **2026-05-13** onwards, Bryan logs daily notes in a structured template
+instead of hour-by-hour blocks. Existing legacy days remain unchanged — the
+journal renders them with the original time-blocked card; new days render
+with the structured card.
+
+```
+[YYYY-MM-DD]
+
+Work log:
+  09:00 — …
+  12:00 — …
+  15:00 — …
+  18:00 — …
+
+Top Things:
+  - …
+  - …
+
+Completed    (each item optionally chip-linked to a Top Thing or assoc)
+Progressing  (same shape)
+Tomorrow     (same shape)
+```
+
+Schema (additive, zero-downtime migration
+`prisma/migrations/20260516000000_add_structured_entries`):
+
+| Column | Type | Default | Purpose |
+|--------|------|---------|---------|
+| `entryKind`  | `text`  | `'LEGACY'` | `LEGACY` \| `STRUCTURED` |
+| `structured` | `jsonb` | `NULL`     | The full template payload |
+
+Legacy `description`, `startTime`, `endTime`, etc. stay populated for every
+row so existing exports, AI summaries and share links keep working
+untouched. For structured entries the server projects the template into a
+plain-text `description` automatically.
+
+The **owner composer** lives on the homepage (`/`):
+
+- Pre-fills today's date in `Asia/Jakarta` wall-clock.
+- Edit-mode hydrates from today's existing structured entry if any.
+- `⌘ / Ctrl + Enter` saves without leaving the page.
+- Once today exists, a **+ Add to Work log** quick row appends a single
+  `{ time, note }` chronologically via
+  `POST /api/progress/{id}/append-worklog`.
+
+## Welcome flow (Owner vs. Visitor gate)
+
+First-time browsers land on `/welcome` and choose between two cards:
+
+```
+┌──────────────────────────┐  ┌──────────────────────────┐
+│ I'm the Owner (Bryan)    │  │ I'm a Visitor            │
+│ → /login (NextAuth)      │  │ → set dpt.role=visitor   │
+│ → set dpt.role=owner     │  │   (1 year)               │
+│   on successful sign-in  │  │                          │
+└──────────────────────────┘  └──────────────────────────┘
+```
+
+The `dpt.role` cookie is `Max-Age=31536000`, `SameSite=Lax`, `Path=/`. The
+`src/middleware.ts` welcome-gate layer reads it; routes in the bypass
+allowlist (`/welcome`, `/login`, `/api/*`, `/share/*`, static) skip the
+redirect.
+
+- The footer's **Switch role** link clears the cookie via
+  `GET /api/welcome/switch-role` and redirects back to `/welcome`.
+- A signed-in browser without `dpt.role` (e.g. an existing Bryan device on
+  first visit after the upgrade) is gated exactly once, then remembered.
+- Authorisation is **never** based on the cookie alone — the cookie is a
+  UX-only "remembered choice". NextAuth + middleware continue to enforce
+  every write.
+
+---
+
 ## 1. Quickstart (local)
 
 Requires Node.js 20+ and npm.

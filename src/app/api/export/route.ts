@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { requireAdmin } from "@/lib/require-admin";
 import * as XLSX from "xlsx";
 import type { Prisma } from "@prisma/client";
 import { statusLabel, priorityLabel } from "@/lib/constants";
@@ -31,9 +31,9 @@ function rowsFromEntries(entries: Awaited<ReturnType<typeof prisma.progressEntry
 }
 
 export async function GET(req: Request) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const userId = (session.user as { id: string }).id;
+  const gate = await requireAdmin();
+  if (!gate.ok) return NextResponse.json(gate.body, { status: gate.status });
+  const userId = gate.userId;
 
   const url = new URL(req.url);
   const format = (url.searchParams.get("format") ?? "xlsx") as Format;

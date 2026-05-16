@@ -1,10 +1,15 @@
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getAdminIds } from "@/lib/public";
+import { requireAdmin } from "@/lib/require-admin";
 import { progressEntrySchema } from "@/lib/validation";
 import { minutesBetween } from "@/lib/utils";
 import { logger } from "@/lib/logger";
+import {
+  deriveStructuredTitle,
+  normaliseStructured,
+  renderStructuredAsDescription,
+} from "@/lib/structured";
 
 type RouteCtx = { params: Promise<{ id: string }> };
 
@@ -21,8 +26,8 @@ async function assertAdminOwned(id: string) {
 }
 
 export async function GET(_req: Request, ctx: RouteCtx) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireAdmin();
+  if (!gate.ok) return NextResponse.json(gate.body, { status: gate.status });
   const { id } = await ctx.params;
   const entry = await assertAdminOwned(id);
   if (!entry) return NextResponse.json({ error: "Not found" }, { status: 404 });
@@ -30,8 +35,8 @@ export async function GET(_req: Request, ctx: RouteCtx) {
 }
 
 export async function PATCH(req: Request, ctx: RouteCtx) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireAdmin();
+  if (!gate.ok) return NextResponse.json(gate.body, { status: gate.status });
   const { id } = await ctx.params;
 
   const existing = await assertAdminOwned(id);
@@ -52,27 +57,48 @@ export async function PATCH(req: Request, ctx: RouteCtx) {
     return NextResponse.json({ error: "Validation failed", fieldErrors }, { status: 400 });
   }
   const data = parsed.data;
-  const derivedTitle =
-    (data.taskTitle?.trim() ||
-      data.description
-        .split(/\r?\n/)
-        .map((s) => s.replace(/^[-•\s]+/, "").trim())
-        .find((s) => s.length > 0)
-        ?.slice(0, 180)) ||
-    existing.taskTitle ||
-    "Untitled entry";
+  const isStructured =
+    data.entryKind === "STRUCTURED" || data.structured != null;
+
+  let derivedTitle: string;
+  let descriptionBody: string;
+  let structuredJson: unknown = null;
+
+  if (isStructured && data.structured) {
+    const norm = normaliseStructured(data.structured);
+    structuredJson = norm;
+    derivedTitle = deriveStructuredTitle(norm, data.date);
+    descriptionBody =
+      data.description?.trim() ||
+      renderStructuredAsDescription(norm, data.date);
+  } else {
+    const fallbackDescription = data.description ?? "";
+    derivedTitle =
+      (data.taskTitle?.trim() ||
+        fallbackDescription
+          .split(/\r?\n/)
+          .map((s) => s.replace(/^[-•\s]+/, "").trim())
+          .find((s) => s.length > 0)
+          ?.slice(0, 180)) ||
+      existing.taskTitle ||
+      "Untitled entry";
+    descriptionBody = fallbackDescription;
+  }
+
   try {
     const updated = await prisma.progressEntry.update({
       where: { id },
       data: {
         date: new Date(data.date + "T00:00:00Z"),
-        startTime: data.startTime ?? null,
-        endTime: data.endTime ?? null,
-        durationMinutes: minutesBetween(data.startTime, data.endTime) ?? null,
+        startTime: isStructured ? null : data.startTime ?? null,
+        endTime: isStructured ? null : data.endTime ?? null,
+        durationMinutes: isStructured
+          ? null
+          : minutesBetween(data.startTime, data.endTime) ?? null,
         projectName: data.projectName ?? null,
         taskTitle: derivedTitle,
         category: data.category ?? null,
-        description: data.description,
+        description: descriptionBody,
         descriptionZh: data.descriptionZh ?? null,
         status: data.status ?? existing.status,
         priority: data.priority ?? existing.priority,
@@ -82,6 +108,8 @@ export async function PATCH(req: Request, ctx: RouteCtx) {
         remarksZh: data.remarksZh ?? null,
         tags: data.tags ?? null,
         relatedLinks: data.relatedLinks ?? null,
+        entryKind: isStructured ? "STRUCTURED" : "LEGACY",
+        structured: (structuredJson ?? null) as never,
       },
     });
     return NextResponse.json({ entry: updated });
@@ -92,8 +120,8 @@ export async function PATCH(req: Request, ctx: RouteCtx) {
 }
 
 export async function DELETE(_req: Request, ctx: RouteCtx) {
-  const session = await auth();
-  if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const gate = await requireAdmin();
+  if (!gate.ok) return NextResponse.json(gate.body, { status: gate.status });
   const { id } = await ctx.params;
   const existing = await assertAdminOwned(id);
   if (!existing) return NextResponse.json({ error: "Not found" }, { status: 404 });

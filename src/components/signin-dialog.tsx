@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useLanguage } from "@/components/language-provider";
 import { cn } from "@/lib/utils";
+import { markOwnerCookie } from "@/app/welcome/actions";
 
 /**
  * Refined sign-in dialog.
@@ -76,6 +77,11 @@ export function SignInDialog({
     if (res?.error) {
       setError(t("signin.error"));
       return;
+    }
+    try {
+      await markOwnerCookie();
+    } catch {
+      /* non-fatal — cookie is just a UX hint */
     }
     router.push(next || "/");
     router.refresh();
