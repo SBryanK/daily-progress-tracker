@@ -99,7 +99,7 @@ export default async function LoginPage({
                     Sign in
                   </h2>
                   <p className="mt-1.5 text-[13.5px] text-fg-muted">
-                    Use your admin credentials to continue.
+                    Use your admin username and password to continue.
                   </p>
                 </header>
 

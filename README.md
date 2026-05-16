@@ -11,8 +11,9 @@ Prisma + SQLite + NextAuth**. Zero external services required for local dev.
 - **Public-by-default** — anyone can open the landing page, dashboard,
   progress history, calendar and AI-summary page. No login wall.
 - **Hidden sign-in** — a discreet "Sign in" button in the top-right corner
-  opens a modal dialog. Only pre-authorized emails (listed in
-  `ADMIN_EMAILS`) can sign in; there is **no** public sign-up.
+  opens a modal dialog. Only pre-authorized usernames (listed in
+  `ADMIN_USERNAMES`, legacy alias `ADMIN_EMAILS`) can sign in; there is
+  **no** public sign-up.
 - **Add / edit / delete** daily progress entries (date, time range, project,
   task, status, priority, blockers, next action, links, tags, remarks) —
   admin only.
@@ -34,7 +35,7 @@ Prisma + SQLite + NextAuth**. Zero external services required for local dev.
   set, otherwise falls back to a deterministic built-in summariser (works
   offline).
 - **Multi-admin auth** — NextAuth v5 credentials provider, comma-separated
-  `ADMIN_EMAILS`. All mutating API routes enforce admin role on the backend.
+  `ADMIN_USERNAMES`. All mutating API routes enforce admin role on the backend.
 - **Dark mode** — system-aware, manual toggle, no FOUC.
 - **A11y** — WCAG AA contrast, labels on every input, focus-visible on every
   interactive element, `prefers-reduced-motion` respected.
@@ -128,7 +129,7 @@ cp .env.example .env
 # Set a strong AUTH_SECRET:
 # openssl rand -base64 32
 # Paste it into AUTH_SECRET in .env
-# Then configure ADMIN_EMAILS="you@example.com,boss@example.com"
+# Then configure ADMIN_USERNAMES="alice,bob"
 # and ADMIN_PASSWORD="..." for the seeded admins.
 
 # 2. Install dependencies
@@ -137,7 +138,7 @@ npm install
 # 3. Create the SQLite DB and run migrations
 npx prisma migrate dev --name init
 
-# 4. Seed the admin users (multi-admin via ADMIN_EMAILS)
+# 4. Seed the admin users (multi-admin via ADMIN_USERNAMES)
 npm run db:seed
 
 # 5. (Optional) If you already imported Excel data under a different admin,
@@ -363,7 +364,7 @@ Vercel serverless functions have a read-only file system.
    | `AUTH_SECRET` | ✅ | `openssl rand -base64 32` |
    | `AUTH_TRUST_HOST` | ✅ | `true` |
    | `NEXT_PUBLIC_APP_URL` | ✅ | `https://your-app.vercel.app` |
-   | `SEED_ADMIN_EMAIL` | ✅ | Your email |
+   | `SEED_ADMIN_USERNAME` | ✅ | Your admin username (legacy `SEED_ADMIN_EMAIL` still accepted) |
    | `SEED_ADMIN_PASSWORD` | ✅ | Strong password |
    | `OPENAI_API_KEY` | optional | Enables OpenAI summaries |
    | `ANTHROPIC_API_KEY` | optional | Enables Anthropic summaries |
@@ -467,7 +468,7 @@ cp .env.example .env
 #   AUTH_SECRET="$(openssl rand -base64 32)"
 #   AUTH_TRUST_HOST="true"
 #   NEXT_PUBLIC_APP_URL="https://progress.yourdomain.com"
-#   ADMIN_EMAILS="you@example.com"
+#   ADMIN_USERNAMES="you"
 #   ADMIN_PASSWORD="..."
 
 npm ci

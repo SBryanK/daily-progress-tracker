@@ -10,7 +10,7 @@ import {
   EyeOff,
   Loader2,
   Lock,
-  Mail,
+  User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { markOwnerCookie } from "@/app/welcome/actions";
@@ -23,9 +23,9 @@ import { markOwnerCookie } from "@/app/welcome/actions";
  * React ever ships to the browser.
  *
  * Features:
- *   • Autofocuses the email field on mount.
+ *   • Autofocuses the username field on mount.
  *   • Show/hide password toggle.
- *   • Client-side validation (required, email format) before round-trip.
+ *   • Client-side validation (required) before round-trip.
  *   • Proper `aria-live` error region with shake animation.
  *   • Disables the button + inputs while the credentials call is in
  *     flight, so double-submits are impossible.
@@ -40,9 +40,9 @@ export function LoginForm({
   initialError: string | null;
 }) {
   const router = useRouter();
-  const emailRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
 
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [capsLockOn, setCapsLockOn] = useState(false);
@@ -52,7 +52,7 @@ export function LoginForm({
   useEffect(() => {
     // Autofocus on mount — small timeout so browsers that autofill
     // credentials on page-load don't fight us for the cursor.
-    const id = window.setTimeout(() => emailRef.current?.focus(), 40);
+    const id = window.setTimeout(() => usernameRef.current?.focus(), 40);
     return () => window.clearTimeout(id);
   }, []);
 
@@ -60,15 +60,15 @@ export function LoginForm({
     e.preventDefault();
     if (loading) return;
 
-    const trimmedEmail = email.trim().toLowerCase();
-    if (!trimmedEmail || !password) {
-      setError("Email and password are both required.");
+    const trimmedUsername = username.trim().toLowerCase();
+    if (!trimmedUsername || !password) {
+      setError("Username and password are both required.");
       return;
     }
-    // Light, forgiving email check — authoritative validation lives on
-    // the server / in zod inside NextAuth's authorize().
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      setError("That doesn't look like a valid email address.");
+    // Light client-side check — authoritative validation lives on the
+    // server / in zod inside NextAuth's authorize().
+    if (!/^[a-zA-Z0-9._-]+$/.test(trimmedUsername)) {
+      setError("Usernames may only contain letters, digits, dot, dash or underscore.");
       return;
     }
 
@@ -84,19 +84,19 @@ export function LoginForm({
       // re-fetch the session and only treat the attempt as successful
       // when the server hands us a real authenticated user back.
       const res = await signIn("credentials", {
-        email: trimmedEmail,
+        username: trimmedUsername,
         password,
         redirect: false,
       });
       if (res?.error) {
-        setError("Incorrect email or password. Please try again.");
+        setError("Incorrect username or password. Please try again.");
         setPassword("");
         return;
       }
       const session = await getSession();
       if (!session?.user) {
         // Bad creds — server rejected, but signIn() didn't surface it.
-        setError("Incorrect email or password. Please try again.");
+        setError("Incorrect username or password. Please try again.");
         setPassword("");
         return;
       }
@@ -138,30 +138,33 @@ export function LoginForm({
       aria-busy={loading}
       noValidate
     >
-      {/* Email */}
+      {/* Username */}
       <div className="flex flex-col gap-1.5">
         <label
-          htmlFor="login-email"
+          htmlFor="login-username"
           className="text-sm font-medium text-fg"
         >
-          Email
+          Username
         </label>
         <div className="relative">
-          <Mail
+          <User
             aria-hidden
             className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-fg-subtle"
           />
           <input
-            ref={emailRef}
-            id="login-email"
-            type="email"
-            inputMode="email"
-            autoComplete="email"
+            ref={usernameRef}
+            id="login-username"
+            type="text"
+            inputMode="text"
+            autoComplete="username"
+            autoCapitalize="none"
+            autoCorrect="off"
+            spellCheck={false}
             required
             disabled={loading}
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="your-username"
             className="w-full h-11 pl-10 pr-3 rounded-lg bg-bg border border-border text-fg placeholder:text-fg-subtle focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:border-accent disabled:opacity-60"
           />
         </div>

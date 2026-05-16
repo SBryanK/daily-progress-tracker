@@ -7,7 +7,7 @@
  * whenever you've double-imported.
  *
  * Usage:
- *   npx tsx scripts/reimport-fresh.ts <path-to-xlsx> [email]
+ *   npx tsx scripts/reimport-fresh.ts <path-to-xlsx> [username]
  */
 
 import { PrismaClient } from "@prisma/client";
@@ -17,19 +17,21 @@ import { parseWorkbook, entryFingerprint } from "../src/lib/excel";
 import { minutesBetween } from "../src/lib/utils";
 
 async function main() {
-  const [, , fileArg, emailArg] = process.argv;
+  const [, , fileArg, idArg] = process.argv;
   if (!fileArg) {
     console.error(
-      "Usage: tsx scripts/reimport-fresh.ts <path-to-xlsx> [email]",
+      "Usage: tsx scripts/reimport-fresh.ts <path-to-xlsx> [username]",
     );
     process.exit(1);
   }
   const path = resolve(fileArg);
-  const defaultEmail =
+  const defaultId =
+    (process.env.ADMIN_USERNAMES ?? "").split(",")[0]?.trim() ||
     (process.env.ADMIN_EMAILS ?? "").split(",")[0]?.trim() ||
+    process.env.SEED_ADMIN_USERNAME ||
     process.env.SEED_ADMIN_EMAIL ||
     "";
-  const email = (emailArg ?? defaultEmail).toLowerCase();
+  const email = (idArg ?? defaultId).toLowerCase();
 
   const prisma = new PrismaClient();
   try {

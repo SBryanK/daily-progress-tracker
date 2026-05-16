@@ -14,7 +14,7 @@ import { markOwnerCookie } from "@/app/welcome/actions";
  * Refined sign-in dialog.
  *
  * Opens when: (a) the "Sign in" trigger is clicked, or (b) the URL has
- * ?signin=1 (middleware redirect). Focus moves to the email input on
+ * ?signin=1 (middleware redirect). Focus moves to the username input on
  * open, Escape closes, backdrop click closes, and the form is fully
  * keyboard-navigable.
  */
@@ -32,11 +32,11 @@ export function SignInDialog({
   const { t } = useLanguage();
 
   const [open, setOpen] = useState(autoOpen);
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
-  const emailRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (autoOpen) setOpen(true);
@@ -44,7 +44,7 @@ export function SignInDialog({
 
   useEffect(() => {
     if (!open) return;
-    emailRef.current?.focus();
+    usernameRef.current?.focus();
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") close();
     }
@@ -72,7 +72,7 @@ export function SignInDialog({
     // signIn(redirect:false) does NOT reliably return { error } on bad
     // credentials. We must verify the resulting session ourselves.
     const res = await signIn("credentials", {
-      email: email.trim().toLowerCase(),
+      username: username.trim().toLowerCase(),
       password,
       redirect: false,
     });
@@ -155,14 +155,17 @@ export function SignInDialog({
                 aria-busy={loading}
               >
                 <Input
-                  ref={emailRef}
-                  label={t("signin.email")}
-                  type="email"
-                  autoComplete="email"
+                  ref={usernameRef}
+                  label={t("signin.username")}
+                  type="text"
+                  autoComplete="username"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
                   required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@example.com"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  placeholder="your-username"
                 />
                 <Input
                   label={t("signin.password")}

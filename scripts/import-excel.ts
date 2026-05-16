@@ -2,9 +2,10 @@
  * CLI Excel importer.
  *
  * Usage:
- *   npx tsx scripts/import-excel.ts <path-to-xlsx> [email]
+ *   npx tsx scripts/import-excel.ts <path-to-xlsx> [username]
  *
- * If [email] is omitted, the script uses the SEED_ADMIN_EMAIL env var (or
+ * If [username] is omitted, the script uses ADMIN_USERNAMES /
+ * ADMIN_EMAILS / SEED_ADMIN_USERNAME / SEED_ADMIN_EMAIL env var (or
  * the first ADMIN user in the database). Duplicates are skipped.
  */
 
@@ -15,17 +16,19 @@ import { parseWorkbook, entryFingerprint } from "../src/lib/excel";
 import { minutesBetween } from "../src/lib/utils";
 
 async function main() {
-  const [, , fileArg, emailArg] = process.argv;
+  const [, , fileArg, idArg] = process.argv;
   if (!fileArg) {
-    console.error("Usage: tsx scripts/import-excel.ts <path-to-xlsx> [email]");
+    console.error("Usage: tsx scripts/import-excel.ts <path-to-xlsx> [username]");
     process.exit(1);
   }
   const path = resolve(fileArg);
-  const defaultEmail =
+  const defaultId =
+    (process.env.ADMIN_USERNAMES ?? "").split(",")[0]?.trim() ||
     (process.env.ADMIN_EMAILS ?? "").split(",")[0]?.trim() ||
+    process.env.SEED_ADMIN_USERNAME ||
     process.env.SEED_ADMIN_EMAIL ||
     "";
-  const email = (emailArg ?? defaultEmail).toLowerCase();
+  const email = (idArg ?? defaultId).toLowerCase();
 
   const prisma = new PrismaClient();
   try {

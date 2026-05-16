@@ -7,29 +7,36 @@ const prisma = new PrismaClient();
 /**
  * Seeds one or more ADMIN users.
  *
+ * The app now uses **usernames** (not emails) as the unique sign-in
+ * identifier. For schema-stability we keep the value in the existing
+ * `User.email` column — Prisma still treats it as a unique string, so
+ * no migration is needed.
+ *
  * Preferred config (multi-admin):
- *   ADMIN_EMAILS="a@x.com,b@x.com"
+ *   ADMIN_USERNAMES="alice,bob"           // or ADMIN_EMAILS (legacy)
  *   ADMIN_PASSWORD="..."
  *
  * Legacy single-admin config (still supported):
- *   SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD / SEED_ADMIN_NAME
+ *   SEED_ADMIN_USERNAME / SEED_ADMIN_EMAIL / SEED_ADMIN_PASSWORD / SEED_ADMIN_NAME
  *
- * Any previous ADMIN user whose email is NOT in ADMIN_EMAILS is demoted to
- * VIEWER so stale credentials can't keep write access. Data is never
- * deleted — only the role flips.
+ * Any previous ADMIN user whose username is NOT in the configured list
+ * is demoted to VIEWER so stale credentials can't keep write access.
+ * Data is never deleted — only the role flips.
  */
 async function main() {
-  const rawEmails =
+  const rawUsernames =
+    process.env.ADMIN_USERNAMES ??
     process.env.ADMIN_EMAILS ??
+    process.env.SEED_ADMIN_USERNAME ??
     process.env.SEED_ADMIN_EMAIL ??
-    "bryan@local.test";
-  const emails = rawEmails
+    "bryan";
+  const usernames = rawUsernames
     .split(",")
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
 
-  if (emails.length === 0) {
-    console.error("[seed] ADMIN_EMAILS is empty. Aborting.");
+  if (usernames.length === 0) {
+    console.error("[seed] ADMIN_USERNAMES is empty. Aborting.");
     process.exit(1);
   }
 
@@ -40,17 +47,17 @@ async function main() {
   const name = process.env.ADMIN_NAME ?? process.env.SEED_ADMIN_NAME ?? "Admin";
   const passwordHash = await bcrypt.hash(password, 10);
 
-  for (const email of emails) {
+  for (const username of usernames) {
     const user = await prisma.user.upsert({
-      where: { email },
+      where: { email: username },
       update: { name, passwordHash, role: "ADMIN" },
-      create: { email, name, role: "ADMIN", passwordHash },
+      create: { email: username, name, role: "ADMIN", passwordHash },
     });
     console.log(`[seed] ADMIN ready: ${user.email}  (password: ${password})`);
   }
 
   const demoted = await prisma.user.updateMany({
-    where: { role: "ADMIN", email: { notIn: emails } },
+    where: { role: "ADMIN", email: { notIn: usernames } },
     data: { role: "VIEWER" },
   });
   if (demoted.count > 0) {

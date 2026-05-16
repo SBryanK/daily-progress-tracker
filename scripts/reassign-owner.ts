@@ -15,16 +15,18 @@ import { PrismaClient } from "@prisma/client";
 async function main() {
   const prisma = new PrismaClient();
 
-  const rawEmails =
+  const rawIds =
+    process.env.ADMIN_USERNAMES ??
     process.env.ADMIN_EMAILS ??
+    process.env.SEED_ADMIN_USERNAME ??
     process.env.SEED_ADMIN_EMAIL ??
     "";
-  const emails = rawEmails
+  const emails = rawIds
     .split(",")
     .map((s) => s.trim().toLowerCase())
     .filter(Boolean);
   if (emails.length === 0) {
-    console.error("[reassign] ADMIN_EMAILS is empty.");
+    console.error("[reassign] ADMIN_USERNAMES is empty.");
     process.exit(1);
   }
 
