@@ -1,13 +1,15 @@
 // Prisma schema for the Daily Progress Tracker.
-// Production: PostgreSQL (Vercel Postgres / Neon / Supabase).
-// For local dev you can still point DATABASE_URL at a local Postgres container.
+// Runtime: SQLite (file-based, lives at prisma/prisma/dev.db on the dev-cloud VM).
+// `DATABASE_URL` in `.env` must therefore start with `file:` and point at the .db file.
+// If you ever migrate this app to managed Postgres, flip provider to "postgresql"
+// and regenerate migrations from the SQLite reality at that moment.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
