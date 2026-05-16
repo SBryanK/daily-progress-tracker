@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import {
   AlertCircle,
   ArrowRight,
@@ -75,12 +75,27 @@ export function LoginForm({
     setError(null);
     setLoading(true);
     try {
+      // NOTE on NextAuth v5 (5.0.0-beta.25):
+      // signIn("credentials", { redirect: false }) does NOT return a
+      // reliable `{ error }` field — on bad credentials it can resolve
+      // to `{ ok: true, error: undefined }` while the underlying
+      // request 302's to the error URL. Trusting `res.error` lets ANY
+      // password "succeed" client-side.  We therefore *always*
+      // re-fetch the session and only treat the attempt as successful
+      // when the server hands us a real authenticated user back.
       const res = await signIn("credentials", {
         email: trimmedEmail,
         password,
         redirect: false,
       });
       if (res?.error) {
+        setError("Incorrect email or password. Please try again.");
+        setPassword("");
+        return;
+      }
+      const session = await getSession();
+      if (!session?.user) {
+        // Bad creds — server rejected, but signIn() didn't surface it.
         setError("Incorrect email or password. Please try again.");
         setPassword("");
         return;

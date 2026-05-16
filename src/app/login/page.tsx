@@ -56,7 +56,7 @@ export default async function LoginPage({
               priority
             />
             <span className="font-semibold tracking-tight text-fg">
-              Daily Progress Tracker
+              Bryan&rsquo;s Daily Progress
             </span>
           </Link>
 
@@ -65,29 +65,14 @@ export default async function LoginPage({
               Welcome back.
             </h1>
             <p className="max-w-md text-[15px] leading-relaxed text-fg-muted">
-              Sign in to add new entries, edit history, import from Excel,
-              generate AI summaries and share read-only views with your
-              manager. Read-only visitors do not need an account.
+              Sign in once and your browser remembers it for a full year.
+              Unlocks the daily composer, edit history, import / export
+              and read-only share links.
             </p>
-            <ul className="space-y-2.5 text-[13.5px] text-fg-muted">
-              <li className="flex items-start gap-2.5">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent" />
-                <span>Fast journal of your daily work, backed by Postgres.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent" />
-                <span>Bilingual (English / 中文) entries and AI summaries.</span>
-              </li>
-              <li className="flex items-start gap-2.5">
-                <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-accent" />
-                <span>One-click share links for read-only stakeholders.</span>
-              </li>
-            </ul>
           </div>
 
           <p className="text-xs text-fg-subtle">
-            © {new Date().getFullYear()} · Built with Next.js + Prisma ·
-            Hosted on Vercel.
+            © {new Date().getFullYear()} · Bryan Santasila Kusno
           </p>
         </section>
 
@@ -108,7 +93,7 @@ export default async function LoginPage({
                 priority
               />
               <span className="font-semibold tracking-tight text-fg">
-                Daily Progress Tracker
+                Bryan&rsquo;s Daily Progress
               </span>
             </Link>
 

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { X, Loader2, Lock, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -68,14 +68,24 @@ export function SignInDialog({
     e.preventDefault();
     setLoading(true);
     setError(null);
+    // See login-form.tsx for the rationale: NextAuth v5 beta's
+    // signIn(redirect:false) does NOT reliably return { error } on bad
+    // credentials. We must verify the resulting session ourselves.
     const res = await signIn("credentials", {
       email: email.trim().toLowerCase(),
       password,
       redirect: false,
     });
-    setLoading(false);
     if (res?.error) {
+      setLoading(false);
       setError(t("signin.error"));
+      return;
+    }
+    const session = await getSession();
+    setLoading(false);
+    if (!session?.user) {
+      setError(t("signin.error"));
+      setPassword("");
       return;
     }
     try {
