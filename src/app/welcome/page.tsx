@@ -47,9 +47,6 @@ export default async function WelcomePage({
           </p>
         </header>
         <WelcomeCards next={safeNext} />
-        <p className="mt-8 text-center text-[12px] text-fg-subtle">
-          You can switch role any time from the footer of any page.
-        </p>
       </div>
     </main>
   );

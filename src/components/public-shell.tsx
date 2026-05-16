@@ -265,15 +265,6 @@ export function PublicShell({
             <span className="text-fg-subtle">{t("footer.location")}</span>
           </p>
           <div className="flex items-center gap-3 whitespace-nowrap">
-            <Link
-              href="/api/welcome/switch-role"
-              prefetch={false}
-              className="text-fg-subtle hover:text-fg underline-offset-2 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded"
-              title="Forget my role choice and show the welcome screen again"
-            >
-              {t("footer.switchRole")}
-            </Link>
-            <span className="text-fg-subtle" aria-hidden>·</span>
             <p className="text-fg-subtle tabular-nums">
               © {new Date().getFullYear()} · {t("footer.rights")}
             </p>

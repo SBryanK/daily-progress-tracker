@@ -64,11 +64,6 @@ export default async function LoginPage({
             <h1 className="text-4xl font-semibold tracking-tight text-fg">
               Welcome back.
             </h1>
-            <p className="max-w-md text-[15px] leading-relaxed text-fg-muted">
-              Sign in once and your browser remembers it for a full year.
-              Unlocks the daily composer, edit history, import / export
-              and read-only share links.
-            </p>
           </div>
 
           <p className="text-xs text-fg-subtle">
@@ -127,10 +122,6 @@ export default async function LoginPage({
                 </div>
               </div>
             </div>
-
-            <p className="mt-4 text-center text-[11.5px] text-fg-subtle">
-              By signing in you agree to log your activity for audit.
-            </p>
           </div>
         </section>
       </div>

@@ -95,13 +95,13 @@ const DICT: Dict = {
     en: "Reserved for the report owner. Visitors can browse everything without signing in.",
     zh: "仅限日志所有者登录。访客无需登录即可浏览全部内容。",
   },
-  "signin.email": { en: "Email", zh: "邮箱" },
+  "signin.username": { en: "Username", zh: "用户名" },
   "signin.password": { en: "Password", zh: "密码" },
   "signin.submit": { en: "Sign in", zh: "登录" },
   "signin.submitting": { en: "Signing in…", zh: "正在登录…" },
   "signin.error": {
-    en: "That email and password don't match our records. Please check for typos and try again.",
-    zh: "邮箱或密码有误。请检查后重试。",
+    en: "That username and password don't match our records. Please check for typos and try again.",
+    zh: "用户名或密码有误。请检查后重试。",
   },
   "signin.close": { en: "Close", zh: "关闭" },
 
@@ -181,7 +181,7 @@ const DICT: Dict = {
 
   // ---- Welcome gate --------------------------------------------------
   "welcome.title": { en: "Welcome", zh: "欢迎" },
-  "welcome.owner": { en: "I'm the Owner (Bryan)", zh: "我是所有者（Bryan）" },
+  "welcome.owner": { en: "I'm Bryan", zh: "我是 Bryan" },
   "welcome.visitor": { en: "I'm a Visitor", zh: "我是访客" },
 
   // ---- Visitor weekly strip ------------------------------------------

@@ -27,7 +27,7 @@ export function WelcomeCards({ next }: { next: string }) {
       <Link
         href={`/login?next=${encodeURIComponent(next)}&fromWelcome=1`}
         className="group relative flex flex-col gap-4 rounded-2xl border border-border bg-bg-surface p-6 sm:p-7 hover:border-accent hover:shadow-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
-        aria-label="I'm the Owner — sign in"
+        aria-label="I'm Bryan — sign in"
       >
         <span
           aria-hidden
@@ -37,12 +37,10 @@ export function WelcomeCards({ next }: { next: string }) {
         </span>
         <div>
           <h2 className="text-lg sm:text-xl font-semibold tracking-tight">
-            I&rsquo;m the Owner (Bryan)
+            I&rsquo;m Bryan
           </h2>
           <p className="mt-1.5 text-[13.5px] leading-relaxed text-fg-muted">
-            Sign in once and your browser remembers it for a full year.
-            Unlocks the daily composer, edit history, import/export and
-            share-link tools.
+            Consistency surpass talent, hope you have a good day, Bryan
           </p>
         </div>
         <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-accent group-hover:translate-x-0.5 transition-transform">
@@ -71,9 +69,7 @@ export function WelcomeCards({ next }: { next: string }) {
           </h2>
           <p className="mt-1.5 text-[13.5px] leading-relaxed text-fg-muted">
             Continue without signing in. You&rsquo;ll see Bryan&rsquo;s
-            journal, calendar and AI summary — all read only. We&rsquo;ll
-            remember your choice for a year so you don&rsquo;t see this
-            screen again on this browser.
+            journal, calendar and AI summary — all read only.
           </p>
         </div>
         <span className="mt-auto inline-flex items-center gap-1.5 text-sm font-medium text-fg group-hover:translate-x-0.5 transition-transform">
