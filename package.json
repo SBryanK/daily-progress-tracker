@@ -14,6 +14,7 @@
     "db:studio": "prisma studio",
     "db:seed": "tsx prisma/seed.ts",
     "db:reassign-owner": "tsx scripts/reassign-owner.ts",
+    "db:add-entry": "tsx scripts/add-entry.ts",
     "import:excel": "tsx scripts/import-excel.ts",
     "postinstall": "prisma generate"
   },

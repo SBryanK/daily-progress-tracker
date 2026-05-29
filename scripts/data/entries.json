@@ -1,0 +1,44 @@
+{
+  "_comment": [
+    "Append-only ledger of Bryan's structured daily progress entries.",
+    "Each item is one day. Fields:",
+    "  isoDate     — YYYY-MM-DD (Asia/Jakarta calendar date)",
+    "  projectName — optional client/project label",
+    "  topThings   — Focus items (>=1; first one becomes the entry title)",
+    "  logs        — Logs (Completed)",
+    "  pending     — Pending (Progressing)",
+    "  carry       — Carry (Tomorrow), optional",
+    "Each row in logs/pending/carry: { note, topThingIndex?, assoc? }",
+    "Add a new entry by appending a new object to `entries` and running:",
+    "  npm run db:add-entry"
+  ],
+  "entries": [
+    {
+      "isoDate": "2026-05-29",
+      "topThings": [
+        "Conduct Knot sharing session and review product update sharing session",
+        "Update CEM, daily progression, and client bi-weekly reports",
+        "Prepare for the presentation to Mandiri next week"
+      ],
+      "logs": [
+        { "note": "Attended Knot session in the morning (9:00 - 10:30 AM)", "topThingIndex": 0 },
+        { "note": "Monitored Telkomsel and Dana accounts", "assoc": "Account monitoring" },
+        { "note": "Learned and experimented through the EdgeOne console", "assoc": "EdgeOne learning" },
+        { "note": "Studied for Tencent Cloud (TC) Professional Engineers certification", "assoc": "Certification preparation" },
+        { "note": "Created AI agents to automate task analysis and roadmapping", "assoc": "AI automation" }
+      ],
+      "pending": [
+        { "note": "Receive concrete plan from Telkomsel regarding POC, metrics, and full-traffic (from Ihvan, Kevin, and Bayu)", "assoc": "Telkomsel POC" },
+        { "note": "Traffic ingestion to Indosat (Exclusive IP POC): waiting for the whitelist IP to be updated in the backend", "assoc": "Indosat POC" },
+        { "note": "Get ComoTV price target", "assoc": "ComoTV pricing" },
+        { "note": "MNC account utilization (activation pending from ID Star)", "assoc": "MNC account" }
+      ],
+      "carry": [
+        { "note": "Continue practice and study for TC Professional Engineers", "assoc": "Certification preparation" },
+        { "note": "Learn EdgeOne Token V authentication", "assoc": "EdgeOne learning" },
+        { "note": "Monitor Telkomsel account", "assoc": "Account monitoring" },
+        { "note": "Confirm concrete plan with Pak Ihvan", "assoc": "Telkomsel POC" }
+      ]
+    }
+  ]
+}
