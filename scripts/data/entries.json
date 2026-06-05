@@ -41,6 +41,52 @@
       ]
     },
     {
+      "isoDate": "2026-06-02",
+      "topThings": [
+        "Learn client token authentication to match Akamai",
+        "Prepare the Mandiri presentation"
+      ],
+      "logs": [
+        { "note": "Created and validated passing criteria points for Telkomsel", "assoc": "Telkomsel POC" },
+        { "note": "Assisted Dexmond with the Indosat test domain clarification", "assoc": "Indosat POC" },
+        { "note": "Provided Tesla cutover briefing and monitoring support", "assoc": "Tesla cutover" },
+        { "note": "Prepared and modified the PPT and technical knowledge for tomorrow's Mandiri meeting", "topThingIndex": 1 },
+        { "note": "Attended the DANA online meeting; clarified the client attestation feature, dynamic scoring development, logging, and SDK update for the second stage challenge (this feature will then handle 3% of traffic)", "assoc": "DANA" }
+      ],
+      "pending": [
+        { "note": "Pak Ihvan to share the timeline for full-traffic migration to EdgeOne on the TV channel", "assoc": "Telkomsel POC" }
+      ],
+      "carry": [
+        { "note": "Provide Tesla Akamai support", "assoc": "Tesla cutover" },
+        { "note": "Continue Mandiri presentation preparation", "topThingIndex": 1 },
+        { "note": "Update overall client progress", "assoc": "Client reporting" }
+      ]
+    },
+    {
+      "isoDate": "2026-06-03",
+      "topThings": [
+        "Meeting with Mandiri (prep and execution)",
+        "Follow up Telkomsel MaxStream progress with Ahmad and Ihvan",
+        "Prepare and update the bi-weekly SEA PPL review (shared with Sam)"
+      ],
+      "logs": [
+        { "note": "Attended Sizle Yu's whiteboard session", "assoc": "Internal training" },
+        { "note": "Followed up with Mr. Wilson regarding the T5 extension in Indonesia", "assoc": "Internship extension" },
+        { "note": "Prepared the Mandiri presentation and attended the meeting", "topThingIndex": 0 },
+        { "note": "Created and shared meeting minutes, and updated client progress and involvement", "topThingIndex": 0 },
+        { "note": "Followed up with Mas Ahmad and Mas Ihvan regarding Telkomsel's progress and next steps", "topThingIndex": 1 },
+        { "note": "Followed up with Hypathia and Zhuoli for Mandiri RFI next steps", "topThingIndex": 0 }
+      ],
+      "pending": [
+        { "note": "Get the Mandiri account pricing for POC", "topThingIndex": 0 },
+        { "note": "Await Wilson and Sam's comments on the internship extension", "assoc": "Internship extension" }
+      ],
+      "carry": [
+        { "note": "Help onboard and set up the Mandiri domain", "topThingIndex": 0 },
+        { "note": "Continue learning for the Tencent Cloud Professional Engineer certification", "assoc": "Certification preparation" }
+      ]
+    },
+    {
       "isoDate": "2026-06-04",
       "topThings": [
         "Prepare for the Tencent Cloud Professional Engineer certification",
@@ -48,18 +94,18 @@
       ],
       "logs": [
         { "note": "Revised Mandiri Meeting Minutes (MoM) and shared findings with Wilson and Sam", "topThingIndex": 1 },
-        { "note": "Had a call with Mr. Sam to discuss the internship extension and project alignment", "assoc": "Internship & project alignment" },
+        { "note": "Had a call with Mr. Sam to discuss the internship extension and project alignment", "assoc": "Internship extension" },
         { "note": "Calculated EdgeOne pricing for a B2B partnership", "assoc": "EdgeOne pricing" },
         { "note": "Received another request from June to sign the resignation document", "assoc": "Resignation process" },
         { "note": "Started work on the HSBC S1 migration testing and validation", "assoc": "HSBC S1 migration" }
       ],
       "pending": [
         { "note": "Clarify the specific domains to be tested", "assoc": "HSBC S1 migration" },
-        { "note": "Follow up with Mr. Wilson", "assoc": "Mandiri account" }
+        { "note": "Follow up with Mr. Wilson", "assoc": "Internship extension" }
       ],
       "carry": [
         { "note": "Tencent Cloud certification preparation and enrollment", "topThingIndex": 0 },
-        { "note": "Update CEM, daily progression, and overall client progress", "assoc": "Reporting" },
+        { "note": "Update CEM, daily progression, and overall client progress", "assoc": "Client reporting" },
         { "note": "Follow up with Mr. Wilson and June regarding the resignation process", "assoc": "Resignation process" }
       ]
     },
@@ -72,19 +118,19 @@
       ],
       "logs": [
         { "note": "Updated CEM and daily progress", "topThingIndex": 2 },
-        { "note": "Clarified the duration limit for Indonesia internship hiring with June and ChatGPT", "assoc": "Internship hiring" },
-        { "note": "Had a call with Natalia to explore career opportunities outside of Tencent", "assoc": "Career exploration" },
+        { "note": "Clarified the duration limit for Indonesia internship hiring with June and ChatGPT", "assoc": "Internship extension" },
+        { "note": "Had a call with Natalia to explore career opportunities outside of Tencent", "assoc": "Career planning" },
         { "note": "Revised, studied, and registered for the certification exam scheduled for next Monday", "topThingIndex": 0 },
-        { "note": "Attended TCI training regarding Telco industry updates and market overview (2:00 PM - 3:00 PM)", "assoc": "TCI training" }
+        { "note": "Attended TCI training regarding Telco industry updates and market overview (2:00 PM - 3:00 PM)", "assoc": "Internal training" }
       ],
       "pending": [
-        { "note": "Mandiri account creation", "assoc": "Mandiri account" },
-        { "note": "Telkomsel B2B service to BSI", "assoc": "Telkomsel B2B" },
-        { "note": "Await updates from BD regarding ComoTV, MNC Games, and Visionet", "assoc": "BD updates" }
+        { "note": "Mandiri account creation", "assoc": "Mandiri" },
+        { "note": "Telkomsel B2B service to BSI", "assoc": "Telkomsel POC" },
+        { "note": "Await updates from BD regarding ComoTV, MNC Games, and Visionet", "assoc": "BD pipeline" }
       ],
       "carry": [
         { "note": "Create a test script for HSBC S1 validation and testing", "assoc": "HSBC S1 migration" },
-        { "note": "Prepare a presentation for prospective customers", "assoc": "Customer presentation" }
+        { "note": "Prepare a presentation for prospective customers", "assoc": "Client reporting" }
       ]
     }
   ]
