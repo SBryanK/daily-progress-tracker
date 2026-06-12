@@ -132,6 +132,130 @@
         { "note": "Create a test script for HSBC S1 validation and testing", "assoc": "HSBC S1 migration" },
         { "note": "Prepare a presentation for prospective customers", "assoc": "Client reporting" }
       ]
+    },
+    {
+      "isoDate": "2026-06-08",
+      "topThings": [
+        "Half day",
+        "Prepare and study Tesla configuration and domain onboarding"
+      ],
+      "logs": [
+        { "note": "Meeting with Daniel; sharing his experience at Tencent SG", "assoc": "Internal networking" },
+        { "note": "Meeting with Sam; clarified Grab transport and HSBC tasks", "assoc": "Internal alignment" },
+        { "note": "EdgeOne sharing session with new BD joiners", "assoc": "Internal training" },
+        { "note": "Dinner with the new BD, Putri", "assoc": "Internal networking" },
+        { "note": "Received the NUS onboarding email", "assoc": "Personal — NUS" }
+      ],
+      "pending": [
+        { "note": "Prepare for TCSEC account creation and testing", "assoc": "TCSEC" },
+        { "note": "Clarify EdgeOne usage for the World Cup relay traffic", "assoc": "Telkomsel Maxstream — World Cup" }
+      ],
+      "carry": [
+        { "note": "Prepare for the Mandiri meeting and domain onboarding", "assoc": "Mandiri" },
+        { "note": "Test HSBC domains: hsbc.com.cn, hsbc.com.hk, hsbcqh.cn", "assoc": "HSBC S1 migration" }
+      ]
+    },
+    {
+      "isoDate": "2026-06-09",
+      "topThings": [
+        "Tesla domain onboarding support and health checks",
+        "Continue testing the HSBC domain",
+        "Prepare and execute the Mandiri meeting"
+      ],
+      "logs": [
+        { "note": "Online with Angelin to test the domain until 1:30 AM", "assoc": "Domain testing" },
+        { "note": "Continued testing the HSBC domain, created a report, and shared it with the group", "topThingIndex": 1 },
+        { "note": "Provided Tesla standby health check support", "topThingIndex": 0 },
+        { "note": "Attended the Mandiri meeting and created the MoM (Minutes of Meeting)", "topThingIndex": 2 },
+        { "note": "Knowledge sharing session with Kevin and Michelle", "assoc": "Internal training" }
+      ],
+      "pending": [
+        { "note": "Telkomsel to share the domain for VOD or relay traffic", "assoc": "Telkomsel Maxstream — World Cup" },
+        { "note": "Await HSBC security configuration from Cyan", "topThingIndex": 1 },
+        { "note": "Qflow process and reminder", "assoc": "Qflow" }
+      ],
+      "carry": [
+        { "note": "Tesla health check standby", "topThingIndex": 0 },
+        { "note": "Follow up on idle accounts", "assoc": "Account monitoring" }
+      ]
+    },
+    {
+      "isoDate": "2026-06-10",
+      "topThings": [
+        "Follow up with ComoTV, Paratekno, and Visionet",
+        "Early farewell with Tencent Indonesia staff",
+        "Update Tesla Healthcheck Report and share it with Mr. Wilson"
+      ],
+      "logs": [
+        { "note": "Helped and reminded Eric regarding Qflow, and Dexmond regarding Indosat", "assoc": "Internal collaboration" },
+        { "note": "Meeting with Tesla, Wilson, Yinloong, and Shubham (11:00 AM - 1:15 PM)", "topThingIndex": 2 },
+        { "note": "Lunch with Max, Ahmad, and Hypathia", "topThingIndex": 1 },
+        { "note": "Informed Wilson regarding the Student Card activation and ICA application status", "assoc": "Internship extension" },
+        { "note": "Created and shared the report for today's Tesla session", "topThingIndex": 2 },
+        { "note": "Shared the HSBC S1 security and acceleration configuration test report", "assoc": "HSBC S1 migration" },
+        { "note": "Updated the bi-weekly client progress", "assoc": "Client reporting" }
+      ],
+      "pending": [
+        { "note": "Telkomsel VOD (relay) clarification for the World Cup", "assoc": "Telkomsel Maxstream — World Cup" },
+        { "note": "Mandiri to share the SSL certificate update", "assoc": "Mandiri" },
+        { "note": "Await Cyan security configuration for HSBC S1", "assoc": "HSBC S1 migration" }
+      ],
+      "carry": [
+        { "note": "Move daily progression and client progress tracking to GitHub", "assoc": "Tooling migration" },
+        { "note": "Continue standby for Tesla and update reports", "topThingIndex": 2 },
+        { "note": "Continue testing for HSBC S1", "assoc": "HSBC S1 migration" },
+        { "note": "Prepare for the meeting with Jatis", "assoc": "Jatis" }
+      ]
+    },
+    {
+      "isoDate": "2026-06-11",
+      "topThings": [
+        "Attend the Tesla cutover meeting, provide standby support, and monitor the process",
+        "Attend the meeting with the Jatis team 3pm - 5pm",
+        "Update the HSBC report and begin the STM security and acceleration configuration testing"
+      ],
+      "logs": [
+        { "note": "Updated result and progress of the HSBC security configuration test results", "topThingIndex": 2 },
+        { "note": "Investigated the Tesla health check incident reported by Shubham last night", "topThingIndex": 0 },
+        { "note": "Support the Tesla cutover meeting with Wilson and Yinloong", "topThingIndex": 0 },
+        { "note": "Conducted a meeting with Jatis, drafted the MoM, and summarized account monitoring operations", "topThingIndex": 1 },
+        { "note": "Conducted a site survey for the upcoming Family Day event", "assoc": "Family Day" }
+      ],
+      "pending": [
+        { "note": "Telkomsel VOD domain integration", "assoc": "Telkomsel Maxstream — World Cup" },
+        { "note": "Jatis domain onboarding (providing technical support and answering queries)", "topThingIndex": 1 }
+      ],
+      "carry": [
+        { "note": "Follow up with Ci Mariyati regarding the Family Day venue survey findings and budget approval", "assoc": "Family Day" },
+        { "note": "Investigate the 411 and 403 blocking issues for Tesla", "topThingIndex": 0 },
+        { "note": "Continue monitoring the system during the APAC regional cutover window", "topThingIndex": 0 }
+      ]
+    },
+    {
+      "isoDate": "2026-06-12",
+      "topThings": [
+        "Provide Tesla domain onboarding support and conduct health checks",
+        "Consolidate information and attend meetings in preparation for the Tencent Indonesia Family Day",
+        "Initiate security and acceleration testing for STM"
+      ],
+      "logs": [
+        { "note": "Requested an update from Wilson regarding the internship extension", "assoc": "Internship extension" },
+        { "note": "Updated the CEM dashboard, bi-weekly client progress reports, and daily task tracker", "assoc": "Client reporting" },
+        { "note": "Online meeting with Natalia to discuss progress for the Family Day event scheduled for July 3rd", "topThingIndex": 1 },
+        { "note": "Attended a standby meeting with the Tesla team", "topThingIndex": 0 },
+        { "note": "Executed and shared the daily HSBC test report in the group chat", "assoc": "HSBC S1 migration" },
+        { "note": "Developed test automation for STM", "topThingIndex": 2 }
+      ],
+      "pending": [
+        { "note": "Telkomsel domain for VOD (awaiting relay access to be shared)", "assoc": "Telkomsel Maxstream — World Cup" },
+        { "note": "Additional Tesla domains scheduled for onboarding next week", "topThingIndex": 0 },
+        { "note": "Awaiting Mr. Wilson's response regarding alternative career extension options beyond the internship", "assoc": "Internship extension" }
+      ],
+      "carry": [
+        { "note": "Monitor and update the status of Tesla health checks and configurations", "topThingIndex": 0 },
+        { "note": "Follow up with the Indosat network team regarding IP whitelisting", "assoc": "Indosat POC" },
+        { "note": "Continue working on the HSBC and STM test reports", "assoc": "HSBC & STM testing" }
+      ]
     }
   ]
 }
