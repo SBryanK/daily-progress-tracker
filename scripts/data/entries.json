@@ -222,7 +222,6 @@
         { "note": "Conducted a site survey for the upcoming Family Day event", "assoc": "Family Day" }
       ],
       "pending": [
-        { "note": "Telkomsel VOD domain integration", "assoc": "Telkomsel Maxstream — World Cup" },
         { "note": "Jatis domain onboarding (providing technical support and answering queries)", "topThingIndex": 1 }
       ],
       "carry": [
@@ -244,10 +243,10 @@
         { "note": "Online meeting with Natalia to discuss progress for the Family Day event scheduled for July 3rd", "topThingIndex": 1 },
         { "note": "Attended a standby meeting with the Tesla team", "topThingIndex": 0 },
         { "note": "Executed and shared the daily HSBC test report in the group chat", "assoc": "HSBC S1 migration" },
-        { "note": "Developed test automation for STM", "topThingIndex": 2 }
+        { "note": "Developed test automation for STM", "topThingIndex": 2 },
+        { "note": "Telkomsel VOD World Cup relay traffic successfully routed onto Tencent EdgeOne", "assoc": "Telkomsel Maxstream — World Cup" }
       ],
       "pending": [
-        { "note": "Telkomsel domain for VOD (awaiting relay access to be shared)", "assoc": "Telkomsel Maxstream — World Cup" },
         { "note": "Additional Tesla domains scheduled for onboarding next week", "topThingIndex": 0 },
         { "note": "Awaiting Mr. Wilson's response regarding alternative career extension options beyond the internship", "assoc": "Internship extension" }
       ],
