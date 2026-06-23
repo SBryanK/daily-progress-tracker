@@ -255,6 +255,119 @@
         { "note": "Follow up with the Indosat network team regarding IP whitelisting", "assoc": "Indosat POC" },
         { "note": "Continue working on the HSBC and STM test reports", "assoc": "HSBC & STM testing" }
       ]
+    },
+    {
+      "isoDate": "2026-06-15",
+      "topThings": [
+        "Participate in the Tesla meeting for joint testing and debugging with Saurabh and Priya from Tesla",
+        "Monitor the Maxstream World Cup VOD channel",
+        "Test STM and share the security and acceleration report"
+      ],
+      "logs": [
+        { "note": "Provided Tesla domain cutover support, including ongoing monitoring and testing", "topThingIndex": 0 },
+        { "note": "Reviewed, rechecked, and validated the BNI POC report", "assoc": "BNI POC" },
+        { "note": "Held a Tencent Indonesia Family Day planning meeting with Rafi and Michella", "assoc": "Family Day" },
+        { "note": "Remained on standby for Indosat IP whitelisting, which is being handled by their internal team", "assoc": "Indosat POC" }
+      ],
+      "pending": [
+        { "note": "Tesla domain cutover details shared by the Tesla team are pending checks and rule updates from Yinloong", "topThingIndex": 0 },
+        { "note": "Awaiting the Family Day venue price list and budget allowance confirmation", "assoc": "Family Day" }
+      ],
+      "carry": [
+        { "note": "Continue monitoring Tesla's domain health", "topThingIndex": 0 },
+        { "note": "Continue monitoring the Maxstream VOD channel", "topThingIndex": 1 },
+        { "note": "Create the Family Day group and send invitations, brainstorm games, and prepare event logistics", "assoc": "Family Day" }
+      ]
+    },
+    {
+      "isoDate": "2026-06-17",
+      "topThings": [
+        "Attend the meeting with the Vice President (VP) of Bank Negara Indonesia (BNI)",
+        "Provide support for the Tesla cutover meeting and health checks",
+        "Monitor network traffic for the Maxstream World Cup VOD"
+      ],
+      "logs": [
+        { "note": "Created the Tencent Family Day group and drafted the proposed event execution plan", "assoc": "Family Day" },
+        { "note": "Caught up with BNI's VP (Pak Sony) and partner (MBT); the VP requested a meeting on July 2nd with his team to share EdgeOne features and the POC (Proof of Concept) results", "topThingIndex": 0 },
+        { "note": "Attended the Tesla cutover meeting and performed domain health checks", "topThingIndex": 1 },
+        { "note": "Generated the STM security and acceleration configuration report with Eric", "assoc": "STM" },
+        { "note": "Shadowed Eric to monitor the Mandiri domain setup process", "assoc": "Mandiri" }
+      ],
+      "pending": [
+        { "note": "Share the Minutes of Meeting (MoM) from the BNI discussion with the relevant group", "topThingIndex": 0 },
+        { "note": "Remind Mr. Wilson and Jack regarding the internship extension in Singapore", "assoc": "Internship extension" }
+      ]
+    },
+    {
+      "isoDate": "2026-06-18",
+      "topThings": [
+        "Attend the joint meeting with Tesla and conduct testing with Priya",
+        "Monitor the Maxstream World Cup VOD channel",
+        "Generate the STM development script"
+      ],
+      "logs": [
+        { "note": "Participated in the Tesla joint meeting and monitored domain cutover health checks", "topThingIndex": 0 },
+        { "note": "Met with Ahmad, Mariyati, Rafi, and Michel to finalize preparations for Tencent Family Day", "assoc": "Family Day" },
+        { "note": "Generated the report for STM security checks", "topThingIndex": 2 },
+        { "note": "Monitored and assisted Eric in configuring the Mandiri domain setup", "assoc": "Mandiri" },
+        { "note": "Assisted with the MSN Akamai migration; remained on standby and checked the health of the origin server", "assoc": "MSN Akamai migration" }
+      ],
+      "pending": [
+        { "note": "Awaiting development decisions regarding the domain cutover from the Tesla team", "topThingIndex": 0 }
+      ],
+      "carry": [
+        { "note": "Continue monitoring and assisting with the Maxstream World Cup VOD and Tesla origin health checks", "topThingIndex": 1 },
+        { "note": "Request the PPT version of the EdgeOne presentation from Yan", "assoc": "EdgeOne presentation" }
+      ]
+    },
+    {
+      "isoDate": "2026-06-19",
+      "topThings": [
+        "Attend the Tesla meeting to conduct joint testing with the Tesla team, Wilson, and Yinloong",
+        "Monitor and provide technical assistance for the Maxstream World Cup VOD",
+        "Continue developing the STM test script and generate the official report"
+      ],
+      "logs": [
+        { "note": "Requested a token limit increase through Lovisalu", "assoc": "AI token limit" },
+        { "note": "Remained on standby for Tesla health checks during the cutover process", "topThingIndex": 0 },
+        { "note": "Clarified and updated the certification refund issue with Marvin", "assoc": "Certification refund" },
+        { "note": "Prepared for the Tencent Family Day meeting with Natalia and Rafi (interns)", "assoc": "Family Day" },
+        { "note": "Generated the daily duty report for STM", "topThingIndex": 2 }
+      ],
+      "pending": [
+        { "note": "The 411 and API errors encountered during the Tesla domain cutover need to be fixed, and findings must be shared", "topThingIndex": 0 },
+        { "note": "Follow up on information updates for Visionet, Como TV, and MNC Games", "assoc": "BD pipeline" }
+      ],
+      "carry": [
+        { "note": "Continue to monitor and assist with the Maxstream World Cup VOD", "topThingIndex": 1 },
+        { "note": "Handle Mandiri domain onboarding, provide SSL certificate assistance, and set up the security configuration (shadowing Eric)", "assoc": "Mandiri" }
+      ]
+    },
+    {
+      "isoDate": "2026-06-22",
+      "topThings": [
+        "Provide support for the Tesla cutover meeting, including joint testing and debugging with Priya from Tesla",
+        "Monitor and shadow Yan regarding Maxstream's geo-blocking requirements",
+        "Request an AI token limit increase, handle the certification refund process, and learn to use Proxyman"
+      ],
+      "logs": [
+        { "note": "Attended the Tesla cutover meeting and prepared the system health check report (12:00 PM - 3:00 PM)", "topThingIndex": 0 },
+        { "note": "Had lunch with the Tencent Indonesia team and Singapore, Malaysia team (mid-year gathering)", "assoc": "Team gathering" },
+        { "note": "Conducted a farewell talk and engagement session with the first batch of interns at Tencent Indonesia", "assoc": "Intern engagement" },
+        { "note": "Attended a meeting to plan logistics and games for the upcoming Family Day", "assoc": "Family Day" },
+        { "note": "Reached out to the HRBP to request an AI token limit increase, and followed up to expedite the billing reimbursement process", "topThingIndex": 2 },
+        { "note": "Updated the weekly CEM (Customer Experience Management) dashboard, daily progress trackers, and client engagement statuses", "assoc": "Client reporting" }
+      ],
+      "pending": [
+        { "note": "The AI token unit request is still pending; need to inform the STM group once updated", "topThingIndex": 2 },
+        { "note": "Awaiting the billing reimbursement for the certification", "assoc": "Certification refund" },
+        { "note": "Clarify the cultural T-shirt distribution process with Hong Yu", "assoc": "Family Day" }
+      ],
+      "carry": [
+        { "note": "Continue monitoring health checks for the Tesla cutover", "topThingIndex": 0 },
+        { "note": "Follow up on 4 clients (Paratekno, Visionet, and Como TV) with Jesselyn", "assoc": "BD pipeline" },
+        { "note": "Continue to monitor and assist with any technical issues for Maxstream", "topThingIndex": 1 }
+      ]
     }
   ]
 }
