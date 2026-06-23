@@ -123,10 +123,10 @@ const DICT: Dict = {
 
   // ---- Structured daily template (added 2026-05-16) ------------------
   "section.workLog": { en: "Work log", zh: "工作日志" },
-  "section.topThings": { en: "Top Things", zh: "今日重点" },
-  "section.completed": { en: "Completed", zh: "已完成" },
-  "section.progressing": { en: "Progressing", zh: "进行中" },
-  "section.tomorrow": { en: "Tomorrow", zh: "明日计划" },
+  "section.topThings": { en: "Focus", zh: "今日重点" },
+  "section.completed": { en: "Logs", zh: "工作记录" },
+  "section.progressing": { en: "Pending", zh: "待办" },
+  "section.tomorrow": { en: "Carry On", zh: "明日延续" },
   "section.workLog.empty": {
     en: "No time blocks logged.",
     zh: "暂未记录时间块。",
@@ -144,20 +144,20 @@ const DICT: Dict = {
   // ---- Today composer (Owner) ----------------------------------------
   "today.title": { en: "Today", zh: "今天" },
   "today.subtitle": {
-    en: "Capture today's notes — work log, top things, and what you completed.",
-    zh: "记录今天的工作日志、重点任务与完成情况。",
+    en: "Capture today's notes — work log, focus, logs, pending, and carry on.",
+    zh: "记录今天的工作日志、重点、工作记录、待办与明日延续。",
   },
   "today.workLog.add": { en: "+ Add row", zh: "+ 添加一行" },
   "today.workLog.time": { en: "Time", zh: "时间" },
   "today.workLog.note": { en: "What you worked on", zh: "工作内容" },
-  "today.topThings.add": { en: "+ Add Top Thing", zh: "+ 添加重点" },
+  "today.topThings.add": { en: "+ Add Focus", zh: "+ 添加重点" },
   "today.topThings.placeholder": {
     en: "e.g. Telkomsel Maxstream POC",
     zh: "例：Telkomsel Maxstream POC",
   },
   "today.outcomes.add": { en: "+ Add", zh: "+ 添加" },
   "today.outcomes.note": { en: "What happened", zh: "发生了什么" },
-  "today.outcomes.linkTo": { en: "Link to Top Thing", zh: "关联重点" },
+  "today.outcomes.linkTo": { en: "Link to Focus", zh: "关联重点" },
   "today.outcomes.assoc": {
     en: "or free-text reference",
     zh: "或填写自由关联",
@@ -169,7 +169,7 @@ const DICT: Dict = {
   },
   "today.saved": { en: "Saved · {time}", zh: "已保存 · {time}" },
   "today.errors.topThings": {
-    en: "Add at least one Top Thing for today.",
+    en: "Add at least one Focus item for today.",
     zh: "请为今天至少填写一个重点任务。",
   },
   "today.quickRow.title": { en: "+ Add to Work log", zh: "+ 追加到工作日志" },

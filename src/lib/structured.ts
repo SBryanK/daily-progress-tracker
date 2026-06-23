@@ -113,7 +113,7 @@ export function renderStructuredAsDescription(
     lines.push("");
   }
   if (s.topThings.length > 0) {
-    lines.push("Top Things:");
+    lines.push("Focus:");
     for (const t of s.topThings) lines.push(`- ${t}`);
     lines.push("");
   }
@@ -131,9 +131,9 @@ export function renderStructuredAsDescription(
     }
     lines.push("");
   }
-  dumpOutcomes("Completed", s.completed);
-  dumpOutcomes("Progressing", s.progressing);
-  dumpOutcomes("Tomorrow", s.tomorrow);
+  dumpOutcomes("Logs", s.completed);
+  dumpOutcomes("Pending", s.progressing);
+  dumpOutcomes("Carry On", s.tomorrow);
   return lines.join("\n").trimEnd();
 }
 
